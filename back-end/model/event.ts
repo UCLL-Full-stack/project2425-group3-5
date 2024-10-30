@@ -4,16 +4,16 @@ import { Venue} from './venue';
 export class Event {
     private id?: number;
     private title: string;
-    private start_date: Date;
-    private end_date: Date;
+    private start_date: string;
+    private end_date: string;
     private userID: User;
     private venueID: Venue;
 
     constructor(event: {
         id?: number;
         title: string;
-        start_date: Date;
-        end_date: Date;
+        start_date: string;
+        end_date: string;
         userID: User;
         venueID: Venue;
     })
@@ -27,7 +27,7 @@ export class Event {
         this.venueID = event.venueID;
     }
 
-    validate(event: {title: string; start_date: Date; end_date: Date; userID: User; venueID: Venue}) {
+    validate(event: {title: string; start_date: string; end_date: string; userID: User; venueID: Venue}) {
         if (!event.title){
             throw new Error("Title is required")
         }
@@ -53,11 +53,11 @@ export class Event {
         return this.title;
     }
 
-    getStartDate(): Date {
+    getStartDate(): string {
         return this.start_date;
     }
 
-    getEndDate(): Date {
+    getEndDate(): string {
         return this.end_date;
     }
 
