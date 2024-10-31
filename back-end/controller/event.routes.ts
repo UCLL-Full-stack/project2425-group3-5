@@ -24,9 +24,10 @@
  *              description: End date of event.
  */
 import express, { NextFunction, Request, Response } from 'express';
-import eventService from '../service/event.service';
 import { User } from '../model/user';
 import { Venue } from '../model/venue';
+import eventService from '../service/event.service';
+
 
 const eventRouter = express.Router();
 
@@ -71,12 +72,12 @@ eventRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
  *                 example: "Hackathon"
  *               start_date:
  *                 type: string
- *                 description: Start date of the event.
- *                 example: "05/11/2024"
+ *                 description: Start date of the event in format yyyy/mm/dd.
+ *                 example: "2024/11/05"
  *               end_date:
  *                 type: string
- *                 description: End date of the event.
- *                 example: "07/11/2024"
+ *                 description: End date of the event in format yyyy/mm/dd.
+ *                 example: "2024/11/07"
  *               userID:
  *                 type: object
  *                 properties:
@@ -102,7 +103,6 @@ eventRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
 eventRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { title, start_date, end_date, userID, venueID } = req.body;
-
         const user = new User(userID);
         const venue = new Venue(venueID);
 
@@ -110,8 +110,8 @@ eventRouter.post('/', async (req: Request, res: Response, next: NextFunction) =>
             title,
             start_date,
             end_date,
-            userID: user,
-            venueID: venue
+            userID: {id: userID},
+            venueID: {id: venueID}
         });
 
         res.status(200).json(newEvent);

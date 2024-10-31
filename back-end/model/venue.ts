@@ -1,4 +1,3 @@
-import { User } from './user';
 
 export class Venue{
     private id?: number;
@@ -39,6 +38,11 @@ export class Venue{
     getName(): string{
         return this.name;
     }
+
+    getAddress(): string{
+        return this.address;
+    }
+    
     getCapacity(): number {
         return this.capacity;
     }
@@ -46,9 +50,9 @@ export class Venue{
     equals(venue: Venue): boolean {
         return (
             this.id === venue.getId() &&
-                this.name === venue.name &&
-                this.address === venue.address &&
-                this.capacity === venue.capacity
+                this.name === venue.getName() &&
+                this.address === venue.getAddress() &&
+                this.capacity === venue.getCapacity()
         )
     }
 

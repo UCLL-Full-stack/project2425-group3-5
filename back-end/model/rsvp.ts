@@ -1,24 +1,24 @@
-import { User } from './user';
-import { Event } from './event';
 import { RsvpStatus } from '../types';
+import { Event } from './event';
+import { User } from './user';
 
 export class Rsvp {
     private  id?: number;
     private event: Event;
-    private users: User[];
+    private user: User;
     private status: RsvpStatus
 
     constructor(rsvp: {
         id?: number;
         event: Event;
-        users: User[];
+        user: User;
         status: RsvpStatus;
     }) {
         this.validate(rsvp)
 
         this.id = rsvp.id;
         this.event = rsvp.event;
-        this.users = rsvp.users || [];
+        this.user = rsvp.user;
         this.status = rsvp.status;
     }
 
@@ -30,8 +30,8 @@ export class Rsvp {
         return this.event;
     }
 
-    getUsers(): User[] {
-        return this.users;
+    getUser(): User {
+        return this.user;
     }
 
     getStatus(): RsvpStatus {
@@ -51,7 +51,7 @@ export class Rsvp {
         return (
             this.id === rsvp.getId() &&
                 this.event.equals(rsvp.getEvent()) &&
-                this.users === rsvp.getUsers() &&
+                this.user === rsvp.getUser() &&
                 this.status === rsvp.getStatus()
         );
     }

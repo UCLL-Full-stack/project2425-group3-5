@@ -1,3 +1,4 @@
+import { set } from 'date-fns';
 import { Event } from '../model/event';
 import { User } from '../model/user';
 import { Venue } from '../model/venue';
@@ -7,8 +8,8 @@ const events = [
     new Event({
         id: 1,
         title: "Concert",
-        start_date: "05/11/2024",
-        end_date: "06/11/2024",
+        start_date: set(new Date(), {year: 2024, month: 11, date: 5}),
+        end_date: set(new Date(), {year: 2024, month: 11, date: 6}),
         userID: new User({
             id: 1,
             username: 'test1',
@@ -43,8 +44,8 @@ const getEventById = ({ id }: { id: number }): Event | null => {
 const createEvent = (eventData: {
     id?: number;
     title: string;
-    start_date: string;
-    end_date: string;
+    start_date: Date;
+    end_date: Date;
     userID: User;
     venueID: Venue;
 }): Event => {

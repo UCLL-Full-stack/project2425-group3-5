@@ -1,9 +1,7 @@
-import {Event} from '../model/event';
-import eventRepository from "../repository/event.db"
-import { User } from '../model/user';
-import { Venue } from '../model/venue';
-import userRepository from "../repository/user.db"
-import venueRepository from "../repository/venue.db"
+import { Event } from '../model/event';
+import eventRepository from "../repository/event.db";
+import userRepository from "../repository/user.db";
+import venueRepository from "../repository/venue.db";
 
 const getAllEvents = (): Event[] => {
     return eventRepository.getAllEvents();
@@ -20,8 +18,8 @@ const getEventById = (id: number): Event => {
 const createEvent = async (eventData: {
     id?: number;
     title: string;
-    start_date: string;
-    end_date: string;
+    start_date: Date;
+    end_date: Date;
     userID: { id: number };
     venueID: { id: number };
 }): Promise<Event> => {
