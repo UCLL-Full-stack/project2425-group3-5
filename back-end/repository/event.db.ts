@@ -33,12 +33,9 @@ const getAllEvents = (): Event[] => {
 }
 
 const getEventById = ({ id }: { id: number }): Event | null => {
-    try{
-        return events.find((event) => event.getId() === id) || null;
-    }catch (error) {
-        console.log(error);
-        throw new Error('Error getting event with id ' + id);
-    }
+
+    return events.find((event) => event.getId() === id) || null;
+
 }
 
 const createEvent = (eventData: {
