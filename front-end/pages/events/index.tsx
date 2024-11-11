@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import EventService from '@services/EventService';
 import Head from 'next/head';
 import Header from '@components/header';
+import {Event} from "@types"
+import EventOverviewTable from "@components/events/EventOverviewTable"
 
-import EventOverviewTable    from '@components/events/EventOverviewTable';
 
 const Events: React.FC = () => {
     const [events, setEvents] = useState<Array<Event>>();
@@ -30,7 +31,7 @@ const Events: React.FC = () => {
                 <h1>Events</h1>
                 <section>
                     <h2>Events overview</h2>
-                    {events && (<EventOverviewTable events={events}></EventOverviewTable>
+                    {events && (<EventOverviewTable events={events}/>
                     )}
                 </section>
             </main>
