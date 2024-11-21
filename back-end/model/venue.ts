@@ -5,14 +5,14 @@ export class Venue{
     private name: string;
     private address: string;
     private capacity: number;
-    private events: Event[];
+
 
     constructor(venue: {
         id?: number;
         name: string;
         address: string;
         capacity: number;
-        events: Event[];
+
     })
     {
         this.validate(venue);
@@ -20,10 +20,10 @@ export class Venue{
         this.name = venue.name;
         this.address = venue.address;
         this.capacity = venue.capacity;
-        this.events = venue.events;
+
     }
 
-    validate(venue: {name: string; address: string; capacity: number; events: Event[]}): void {
+    validate(venue: {name: string; address: string; capacity: number;}): void {
         if(!venue.name){
             throw new Error("Name is required");
         }
@@ -51,17 +51,27 @@ export class Venue{
         return this.capacity;
     }
 
-    getEvents(): Event[] {
-        return this.events;
-    }
+
     equals(venue: Venue): boolean {
         return (
             this.id === venue.getId() &&
                 this.name === venue.getName() &&
                 this.address === venue.getAddress() &&
-                this.capacity === venue.getCapacity() &&
-                this.events === venue.getEvents()
+                this.capacity === venue.getCapacity()
         )
+    }
+    static from({
+                    id,
+                    name,
+                    address,
+                    capacity,
+                }: VenuePrisma ) {
+        return new Venue({
+            id,
+            name,
+            address,
+            capacity,
+        });
     }
 
 }

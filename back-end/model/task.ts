@@ -76,5 +76,21 @@ export class Task {
         )
     }
 
+    static from({
+        id,
+        description,
+        status,
+        due_date,
+        user
+    }: TaskPrisma & { user: UserPrisma })  {
+        return new Task({
+            id,
+            description,
+            status,
+            due_date,
+            user: User.from(user)
+        })
+}
+
 
 }

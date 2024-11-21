@@ -3,6 +3,7 @@ type RsvpStatus = "attending" | "not attending" | "maybe";
 
 
 type RSVPInput = {
+    id?: number;
     event: EventInput;
     user: UserInput;
     status: RsvpStatus;
@@ -13,13 +14,11 @@ type TaskInput = {
     description: string;
     status: string;
     due_date: Date;
-    event: EventInput;
     user: UserInput;
 };
 
 type UserInput = {
     id?: number;
-    username: string;
     firstname: string;
     lastname: string;
     email: string;
@@ -39,10 +38,8 @@ type EventInput = {
     title: string;
     start_date: Date;
     end_date: Date;
-    user: UserInput;
-    venue: VenueInput;
-    tasks?: TaskInput[];
-    RSVPs?: RSVPInput[];
+    user: UserInput[];
+    venue: VenueInput[];
 };
 
 export {

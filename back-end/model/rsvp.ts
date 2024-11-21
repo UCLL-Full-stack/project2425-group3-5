@@ -7,13 +7,13 @@ export class RSVP {
     private id?: number
     private event: Event;
     private user: User;
-    private status: RsvpStatus;
+    private status: string;
 
     constructor(rsvp: {
         id?: number;
         event: Event;
         user: User;
-        status: RsvpStatus;
+        status: string;
     }) {
         this.validate(rsvp);
         this.id = rsvp.id;
@@ -26,7 +26,7 @@ export class RSVP {
         id?: number;
         event: Event;
         user: User;
-        status: RsvpStatus;
+        status: string;
     }) {
         if (!rsvp.event) throw new Error("Event ID is required");
         if (!rsvp.user) throw new Error("User ID is required");
@@ -45,7 +45,7 @@ export class RSVP {
         return this.user;
     }
 
-    getStatus(): RsvpStatus {
+    getStatus(): string {
         return this.status;
     }
 
@@ -58,6 +58,19 @@ export class RSVP {
         )
     }
 
+    static from({
+                    id,
+                    event,
+                    user,
+                    status
+                }: RsvpPrisma & { event: EventPrisma; user: UserPrisma }) {
+        return new RSVP({
+            id,
+            event: Event.from(event),
+            user: User.from(user),
+            status
+        });
+    }
 
 
 }
