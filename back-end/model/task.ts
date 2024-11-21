@@ -1,35 +1,56 @@
-import { TaskStatus } from '../types';
+
 import { User } from './user';
 import { Event } from './event';
 
+import { User as UserPrisma } from "@prisma/client"
+import {
+    Event as EventPrisma,
+    Venue as VenuePrisma,
+    Task as TaskPrisma,
+    RSVP as RsvpPrisma,
+} from '@prisma/client'
+
 
 export class Task {
-    private id?: number;
+    private id: number;
     private description: string;
-    private status: TaskStatus;
-    private dueDate : Date;
+    private status: string;
+    private due_date: Date;
     private event: Event;
-    private assignedUsers: User[];
+    private user: User;
 
     constructor(task: {
-        id?: number;
+        id: number;
         description: string;
-        status: TaskStatus;
-        dueDate: Date;
+        status: string;
+        due_date: Date;
         event: Event;
-        assignedUsers: User[];
+        user: User;
     }) {
-        this.validate(task)
-
+        this.validate(task);
         this.id = task.id;
         this.description = task.description;
         this.status = task.status;
-        this.dueDate = task.dueDate;
+        this.due_date = task.due_date;
         this.event = task.event;
-        this.assignedUsers = task.assignedUsers || [];
+        this.user = task.user;
     }
 
-    getId(): number | undefined {
+    validate(task: {
+        description: string;
+        status: string;
+        due_date: Date;
+        event: Event;
+        user: User;
+    }) {
+        if (!task.description) throw new Error("Description is required");
+        if (!task.status) throw new Error("Status is required");
+        if (!task.due_date) throw new Error("Due date is required");
+        if (!task.event) throw new Error("Event ID is required");
+        if (!task.user) throw new Error("Assigned user is required");
+    }
+
+    getId(): number {
         return this.id;
     }
 
@@ -37,45 +58,52 @@ export class Task {
         return this.description;
     }
 
-    getStatus(): TaskStatus {
+    getStatus(): string {
         return this.status;
     }
 
     getDueDate(): Date {
-        return this.dueDate;
+        return this.due_date;
     }
 
     getEvent(): Event {
         return this.event;
     }
 
-    getAssignedUsers(): User[] {
-        return this.assignedUsers;
+    getUser(): User {
+        return this.user;
     }
 
-    validate(task: {description: string; status: TaskStatus; dueDate: Date; event: Event}) {
-        if (!task.description) {
-            throw new Error("Description is required")
-        }
-        if (!task.status) {
-            throw new Error("Status is required")
-        }
-        if (!task.dueDate) {
-            throw new Error("DueDate is required")
-        }
-        if (!task.event) {
-            throw new Error("Event is required")
-        }
-    }
-
-    equal(task: Task): boolean {
+    equals(task: Task): boolean {
         return (
-            this.id !== task.getId() &&
-            this.description !== task.getDescription() &&
-            this.status !== task.getStatus() &&
-            this.dueDate !== task.getDueDate() &&
+            this.id === task.getId() &&
+            this.description === task.getDescription() &&
+            this.status === task.getStatus() &&
+            this.due_date.getTime() === task.getDueDate().getTime() &&
             this.event.equals(task.getEvent()) &&
-            this.assignedUsers.every((assignedUser, index) => assignedUser.equal(task.getAssignedUsers()[index]))
+            this.user.equal(task.getUser())
         );
     }
+
+    static from({
+                    id,
+                    description,
+                    status,
+                    due_date,
+                    event,
+                    user,
+                }: TaskPrisma & {
+        event: EventPrisma;
+        user: UserPrisma;
+    }): Task {
+        return new Task({
+            id,
+            description,
+            status: status as string,
+            due_date,
+            event: Event.from(event),
+            user: User.from(user),
+        });
+    }
+
 }

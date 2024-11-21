@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  description String
+  status      String
+  due_date    DateTime
+  event       Event    @relation(fields: [event_id], references: [id])
+  event_id    Int
+  user        User     @relation(fields: [user_id], references: [id])
+  user_id     Int
+}
+
+model Event {
+  id         Int      @id @default(autoincrement())
+  title      String
+  start_date DateTime
+  end_date   DateTime
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    Int
+  venue      Venue    @relation(fields: [venue_id], references: [id])
+  venue_id   Int
+  tasks      Task[]
+  RSVPs      RSVP[]
+}
+
+model Venue {
+  id       Int     @id @default(autoincrement())
+  name     String
+  address  String
+  capacity Int
+  event    Event[]
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  username  String
+  firstname String
+  lastname  String
+  email     String  @unique
+  password  String
+  RSVPs     RSVP[]
+  Task      Task[]
+  Event     Event[]
+  role      String
+}
+
+model RSVP {
+  id       Int    @id @default(autoincrement())
+  event    Event  @relation(fields: [event_id], references: [id])
+  event_id Int
+  user     User   @relation(fields: [user_id], references: [id])
+  user_id  Int
+  status   String
+}

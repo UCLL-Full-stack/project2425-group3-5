@@ -1,5 +1,5 @@
 import { Role } from '../types';
-
+import { User as UserPrisma } from '@prisma/client';
 export class User {
     private id?: number;
     private username: string;
@@ -92,5 +92,25 @@ export class User {
         this.email === user.getEmail() &&
         this.password === user.getPassword() &&
         this.role === user.getRole());
+    }
+
+    static from({
+                    id,
+                    username,
+                    firstname,
+                    lastname,
+                    email,
+                    password,
+                    role,
+                }: UserPrisma): User {
+        return new User({
+            id,
+            username,
+            firstname,
+            lastname,
+            email,
+            password,
+            role: role as Role,
+        });
     }
 }

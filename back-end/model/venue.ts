@@ -1,3 +1,4 @@
+import { Venue as VenuePrisma } from '@prisma/client'
 
 export class Venue{
     private id?: number;
@@ -54,6 +55,20 @@ export class Venue{
                 this.address === venue.getAddress() &&
                 this.capacity === venue.getCapacity()
         )
+    }
+
+    static from({
+                    venue,
+                    name,
+                    address,
+                    capacity,
+                }: VenuePrisma): Venue {
+        return new Venue({
+            id: venue,
+            name,
+            address,
+            capacity,
+        });
     }
 
 }

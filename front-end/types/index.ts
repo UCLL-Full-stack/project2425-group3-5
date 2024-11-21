@@ -1,3 +1,22 @@
+export type Role = "admin" | "organizer" | "attendee";
+export type RsvpStatus = "attending" | "not attending" | "maybe";
+
+export type RSVP = {
+    event: Event;
+    user: User;
+    status: RsvpStatus;
+}
+
+export type Task = {
+    id?: number;
+    description: string;
+    status: string;
+    due_date: string;
+    event: Event;
+    user: User;
+
+}
+
 export type User = {
     id?: number;
     username: string;
@@ -5,16 +24,7 @@ export type User = {
     lastname: string;
     email: string;
     password: string;
-    role: string;
-}
-
-export type Event = {
-    id?: number;
-    title: string;
-    start_date: Date;
-    end_date: Date;
-    userID: User;
-    venueID: Venue;
+    role: Role;
 }
 
 export type Venue = {
@@ -23,3 +33,16 @@ export type Venue = {
     address: string;
     capacity: number;
 }
+
+export type Event = {
+    id?: number;
+    title: string;
+    start_date: string;
+    end_date: string;
+    user: User;
+    venue: Venue;
+    tasks?: Task[];
+    RSVPs?: RSVP[];
+
+}
+
