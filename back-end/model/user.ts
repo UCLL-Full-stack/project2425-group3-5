@@ -2,40 +2,37 @@ import { Role } from '../types';
 import { User as UserPrisma } from '@prisma/client';
 export class User {
     private id?: number;
-    private username: string;
     private firstname: string;
     private lastname: string;
     private email: string;
     private password: string;
     private role: Role;
+    private events: Event[];
 
     constructor(user: {
         id?: number;
-        username: string;
         firstname: string;
         lastname: string;
         email: string;
         password: string;
         role: Role;
+        events: Event[];
     }) {
-        this.validate((user));
+        this.validate(user);
 
         this.id = user.id;
-        this.username = user.username;
         this.firstname = user.firstname;
         this.lastname = user.lastname;
         this.email = user.email;
         this.password = user.password;
         this.role = user.role;
+        this.events = user.events;
     }
 
     getId(): number | undefined{
         return this.id;
     }
 
-    getUserName(): string {
-        return this.username;
-    }
 
     getFirstName(): string {
         return this.firstname;
@@ -56,17 +53,18 @@ export class User {
         return this.role;
     }
 
+    getEvent(): Event[] | undefined {
+        return this.events;
+    }
+
     validate(user: {
-        username: string;
         firstname: string;
         lastname: string;
         email: string;
         password: string;
         role: Role;
+        events: Event[];
     }) {
-        if (!user.username?.trim()) {
-            throw new Error("Username is required");
-        }
         if (!user.firstname?.trim()) {
             throw new Error("First name is required");
         }
@@ -84,33 +82,15 @@ export class User {
         }
     }
 
-    equal(user: User): boolean {
-        return (this.id === user.getId() &&
-        this.username === user.getUserName() &&
-        this.firstname === user.getFirstName() &&
-        this.lastname === user.getLastName() &&
-        this.email === user.getEmail() &&
-        this.password === user.getPassword() &&
-        this.role === user.getRole());
-    }
-
-    static from({
-                    id,
-                    username,
-                    firstname,
-                    lastname,
-                    email,
-                    password,
-                    role,
-                }: UserPrisma): User {
-        return new User({
-            id,
-            username,
-            firstname,
-            lastname,
-            email,
-            password,
-            role: role as Role,
-        });
+    equals (user: User): boolean {
+        return (
+            this.id === user.getId() &&
+            this.firstname === user.getFirstName() &&
+            this.lastname === user.getLastName() &&
+            this.email === user.getEmail() &&
+            this.password === user.getPassword() &&
+            this.role === user.getRole() &&
+            this.events === user.getEvent()
+        )
     }
 }

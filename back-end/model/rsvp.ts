@@ -4,22 +4,26 @@ import { RsvpStatus } from '../types';
 import { RSVP as RsvpPrisma, Event as EventPrisma, User as UserPrisma } from '@prisma/client';
 
 export class RSVP {
+    private id?: number
     private event: Event;
     private user: User;
     private status: RsvpStatus;
 
     constructor(rsvp: {
+        id?: number;
         event: Event;
         user: User;
         status: RsvpStatus;
     }) {
         this.validate(rsvp);
+        this.id = rsvp.id;
         this.event = rsvp.event;
         this.user = rsvp.user;
         this.status = rsvp.status;
     }
 
     validate(rsvp: {
+        id?: number;
         event: Event;
         user: User;
         status: RsvpStatus;
@@ -27,6 +31,10 @@ export class RSVP {
         if (!rsvp.event) throw new Error("Event ID is required");
         if (!rsvp.user) throw new Error("User ID is required");
         if (!rsvp.status) throw new Error("Status is required");
+    }
+
+    getId(): number | undefined {
+        return this.id;
     }
 
     getEvent(): Event {
@@ -41,27 +49,15 @@ export class RSVP {
         return this.status;
     }
 
-    equals(rsvp: RSVP): boolean {
+    equals (rsvp: RSVP): boolean {
         return (
-            this.event.equals(rsvp.getEvent()) &&
-            this.user.equal(rsvp.getUser()) &&
-            this.status === rsvp.getStatus()
-        );
+            this.id === rsvp.getId() &&
+                this.event === rsvp.getEvent() &&
+                this.status === rsvp.getStatus() &&
+                this.user === rsvp.getUser()
+        )
     }
 
-    static from({
-                    event,
-                    user,
-                    status,
-                }: RsvpPrisma & {
-        event: EventPrisma;
-        user: UserPrisma;
-    }): RSVP {
-        return new RSVP({
-            event: Event.from(event),
-            user: User.from(user),
-            status: status as RsvpStatus,
-        });
-    }
+
 
 }
