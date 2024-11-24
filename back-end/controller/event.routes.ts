@@ -38,7 +38,7 @@ const eventRouter = express.Router();
  *     summary: Get a list of all events.
  *     responses:
  *       200:
- *         description: A JSON array of all lecturers.
+ *         description: A JSON array of all events.
  *         content:
  *           application/json:
  *             schema:
@@ -46,8 +46,8 @@ const eventRouter = express.Router();
  */
 eventRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const lecturer = await eventService.getAllEvents();
-        res.status(200).json(lecturer);
+        const events = await eventService.getAllEvents();
+        res.status(200).json(events);
     }catch (error){
         const err = error as Error;
         res.status(400).json({status: 'error', errorMessage: err.message});

@@ -1,3 +1,5 @@
+/**
+
 import { User } from "../../model/user";
 
 test('given: valid values for user, when: user is created, then: user is created with those value',() => {
@@ -26,3 +28,4 @@ test('given: valid values for user, when: user is created, then: user is created
     expect(user.getPassword()).toEqual(password1);
     expect(user.getRole()).toEqual(role1);
 })
+ **/

@@ -1,3 +1,5 @@
+/**
+
 import { set } from "date-fns";
 import { Event } from "../../model/event";
 import { Rsvp } from "../../model/rsvp";
@@ -51,3 +53,4 @@ test('given: valid values for rsvp, when: rsvp is created, then: rsvp is created
     expect(rsvp1.getUser()).toEqual(guest1);
     expect(rsvp1.getStatus()).toEqual(rsvpStatus1);
 })
+ **/

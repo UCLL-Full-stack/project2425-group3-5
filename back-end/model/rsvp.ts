@@ -58,6 +58,7 @@ export class RSVP {
         )
     }
 
+    /**
     static from({
                     id,
                     event,
@@ -66,11 +67,11 @@ export class RSVP {
                 }: RsvpPrisma & { event: EventPrisma; user: UserPrisma }) {
         return new RSVP({
             id,
-            event: Event.from(event),
+            //event: Event.from(event),
             user: User.from(user),
             status
         });
     }
-
+**/
 
 }

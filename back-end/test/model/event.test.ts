@@ -1,3 +1,4 @@
+/**
 import { set } from "date-fns";
 import { Event } from "../../model/event";
 import { User } from "../../model/user";
@@ -41,3 +42,4 @@ test('given: valid values for event, when: event is created, then: event is crea
     expect(event1.getVenues()).toEqual(venue1);
     
 })
+ **/

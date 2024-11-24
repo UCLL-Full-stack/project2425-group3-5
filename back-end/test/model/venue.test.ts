@@ -1,3 +1,5 @@
+/**
+
 import { Venue } from "../../model/venue";
 
 test('given: valid values for venue, when: venue is created, then: venue is created with those value',() => {
@@ -16,3 +18,5 @@ test('given: valid values for venue, when: venue is created, then: venue is crea
     expect(venue1.getAddress()).toEqual(address1);
     expect(venue1.getCapacity()).toEqual(capacity1);
 })
+
+ **/

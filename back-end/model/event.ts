@@ -88,19 +88,19 @@ export class Event {
                     title,
                     start_date,
                     end_date,
-                    users,
-                    venues,
+                    user,
+                    venue,
                 }: EventPrisma &  {
-                    users?: UserPrisma[]
-                    venues?: VenuePrisma[]
+                    user: UserPrisma[]
+                    venue: VenuePrisma[]
         }) {
         return new Event({
             id,
             title,
             start_date,
             end_date,
-            users: (users || []).map((user) => User.from(user)),
-            venues: (venues || []).map((venue) => Venue.from(venue)),
+            users: user.map((user) => User.from(user)),
+            venues: venue.map((venue) => Venue.from(venue)),
         })
     }
 

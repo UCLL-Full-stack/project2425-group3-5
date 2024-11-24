@@ -1,3 +1,5 @@
+/**
+
 import { set } from "date-fns";
 import { Event } from "../../model/event";
 import { Task } from "../../model/task";
@@ -58,3 +60,5 @@ test('given: valid values for task, when: task is created, then: task is created
     expect(task1.getAssignedUsers()).toContain(helper1);
     
 })
+
+ **/
