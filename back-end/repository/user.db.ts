@@ -1,27 +1,50 @@
 import { User } from '../model/user';
+import database from './database';
 
-const users = [
-    new User({
-        id: 1,
-        username: 'test1',
-        firstname: 'Jowan',
-        lastname: 'Abdo',
-        email: 'test@gmail.com',
-        password: '12345',
-        role: 'organiser'
-    }),
-];
 
-const getUserById = ({ id }: {id: number}): User | null => {
+const getAllUsers = async (): Promise<User[]> => {
     try {
-        return users.find((user) => user.getId() === id) || null;
-    }catch (error) {
-        console.log(error);
-        throw new Error('Error getting user with id ' + id);
+        const usersPrisma = await database.user.findMany();
+        return usersPrisma.map((userPrisma) => User.from(userPrisma));
+    } catch (error) {
+        throw new Error('Failed to retrieve users');
     }
-}
+};
+
+const getUserById = async (id: number): Promise<User | null> => {
+    try {
+        const userPrisma = await database.user.findUnique({
+            where: { id },
+        });
+
+        return userPrisma ? User.from(userPrisma) : null;
+    } catch (error) {
+        throw new Error('Failed to retrieve user');
+    }
+};
+
+const addUser = async (user: User): Promise<User> => {
+    try {
+        const createdUser = await database.user.create({
+            data: {
+                firstname: user.getFirstName(),
+                lastname: user.getLastName(),
+                email: user.getEmail(),
+                password: user.getPassword(),
+                role: user.getRole(),
+            },
+        });
+
+        return User.from(createdUser);
+    } catch (error) {
+        throw new Error('Failed to add user');
+    }
+};
+
 
 
 export default {
-    getUserById
+    getAllUsers,
+    getUserById,
+    addUser,
 };
