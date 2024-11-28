@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import EventService from '@services/EventService';
 import Head from 'next/head';
 import Header from '@components/header';
 import {Event} from "@types"
 import EventOverviewTable from "@components/events/EventOverviewTable"
+import UserOverviewTable from "@components/users/UserOverviewTable"
 
 
 const Events: React.FC = () => {
     const [events, setEvents] = useState<Array<Event>>();
+    const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
     const getEvents = async () => {
         const response = await EventService.getAllEvents();
@@ -31,7 +33,10 @@ const Events: React.FC = () => {
                 <h1>Events</h1>
                 <section>
                     <h2>Events overview</h2>
-                    {events && (<EventOverviewTable events={events}/>
+                    {events && (<EventOverviewTable events={events} selectEvent={setSelectedEvent} />
+                    )}
+                    {selectedEvent && (
+                        <UserOverviewTable event={selectedEvent} />
                     )}
                 </section>
             </main>

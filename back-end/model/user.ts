@@ -13,7 +13,7 @@ export class User {
     private lastname: string;
     private email: string;
     private password: string;
-    private role: string;
+    private role: Role;
 
     constructor(user: {
         id?: number;
@@ -21,7 +21,7 @@ export class User {
         lastname: string;
         email: string;
         password: string;
-        role: string;
+        role: Role;
     }) {
         this.validate(user);
 
@@ -53,7 +53,7 @@ export class User {
         return this.password;
     }
 
-    getRole(): string {
+    getRole(): Role {
         return this.role;
     }
 
@@ -63,7 +63,7 @@ export class User {
         lastname: string;
         email: string;
         password: string;
-        role: string;
+        role: Role;
     }) {
         if (!user.firstname?.trim()) {
             throw new Error("First name is required");
@@ -77,8 +77,12 @@ export class User {
         if (!user.password.trim()) {
             throw new Error("Password is required");
         }
-        if (!user.role?.trim()) {
+        if (!user.role) {
             throw new Error("Role is required");
+        }
+        const validRoles: Role[] = ["admin", "organizer", "attendee"];
+        if (!validRoles.includes(user.role)) {
+            throw new Error(`Invalid role: ${user.role}. Allowed roles are ${validRoles.join(', ')}`);
         }
     }
 
@@ -106,7 +110,7 @@ export class User {
             lastname,
             email,
             password,
-            role,
+            role: role as Role,
         });
     }
 }

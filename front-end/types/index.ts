@@ -38,6 +38,6 @@ export type Event = {
     title: string;
     start_date: string;
     end_date: string;
-    user: User[];
+    users: User[];
 }
 
