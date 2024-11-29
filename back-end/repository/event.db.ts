@@ -6,15 +6,16 @@ import database from './database';
 
 const getAllEvents = async (): Promise<Event[]> => {
     try {
-        const eventPrisma = await database.event.findMany({
-            include: {user: true, venue: true},
-        })
-        return eventPrisma.map((eventPrisma) => Event.from(eventPrisma));
-    }catch (error){
+        const events = await database.event.findMany({
+            include: { user: true, venue: true },
+        });
+        console.log("Fetched events:", JSON.stringify(events, null, 2)); // Log full event data
+        return events.map((event) => Event.from(event));
+    } catch (error: any) {
+        console.error("Error fetching events from the database:", error);
         throw new Error("DB error");
     }
-
-}
+};
 
 const getEventById = async (id: number): Promise<Event> => {
     try {

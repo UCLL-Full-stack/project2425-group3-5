@@ -1,6 +1,11 @@
 export type Role = "admin" | "organizer" | "attendee";
 export type RsvpStatus = "attending" | "not attending" | "maybe";
 
+export type StatusMessage = {
+    message: string;
+    type: "error" | "success";
+};
+
 export type RSVP = {
     id: number;
     event: Event;

@@ -16,6 +16,8 @@ const port = process.env.APP_PORT || 3000;
 app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(bodyParser.json());
 
+app.use('/events', eventRouter);
+
 app.get('/status', (req, res) => {
     res.json({ message: 'Courses API is running...' });
 });
@@ -40,8 +42,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/events', eventRouter);
 app.use('/users', userRouter);
 app.use('/venues', venueRouter);
 app.use('/tasks', venueRouter);

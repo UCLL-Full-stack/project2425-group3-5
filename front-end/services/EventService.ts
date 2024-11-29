@@ -1,4 +1,4 @@
-const getAllEvents = async () => {
+const getAllEvents = () => {
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/events',
         {
             method: 'GET',
@@ -14,9 +14,21 @@ const getEventById = (eventId: string) => {
         })
 }
 
+const createEvent = async (formData: any) => {
+    return fetch(process.env.NEXT_PUBLIC_API_URL+'/events',
+        {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+}
+
 const EventService = {
     getAllEvents,
     getEventById,
+    createEvent
 }
 
 export default EventService;

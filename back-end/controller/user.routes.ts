@@ -23,7 +23,7 @@ const userRouter = express.Router();
  *           type: string
  *           description: Email address of the user.
  *         role:
- *           type: string
+ *           type: Role
  *           description: Role of the user.
  */
 
