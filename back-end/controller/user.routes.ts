@@ -54,6 +54,31 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
 /**
  * @swagger
+ * /users/organizers:
+ *   get:
+ *     summary: Get all organizers
+ *     responses:
+ *       200:
+ *         description: A list of all organizers.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ */
+userRouter.get('/organizers', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const organizer = await userService.getOrganizers();
+        res.status(200).json(organizer);
+    } catch (error) {
+        const err = error as Error;
+        res.status(400).json({ status: 'error', errorMessage: err.message });
+    }
+});
+
+/**
+ * @swagger
  * /users/{id}:
  *   get:
  *     summary: Get user by ID

@@ -40,9 +40,29 @@ const addVenue = async (venue: Venue): Promise<Venue> => {
     }
 };
 
+const editVenue = async (venue: Venue): Promise<Venue> => {
+    try {
+        const updatedVenue = await database.venue.update({
+            where: { id: venue.getId() },
+            data: {
+                name: venue.getName(),
+                address: venue.getAddress(),
+                capacity: venue.getCapacity(),
+            },
+        });
+
+        return Venue.from(updatedVenue);
+    } catch (error) {
+        console.error('Failed to update venue in database:', error);
+        throw new Error('Failed to update venue');
+
+    }
+};
+
 
 export default {
     getAllVenues,
     getVenueById,
-    addVenue
+    addVenue,
+    editVenue,
 }

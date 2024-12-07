@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Event } from '@types';
+import Link from 'next/link';
 
 
 type Props = {
@@ -13,6 +14,9 @@ const EventOverviewTable: React.FC<Props> = ({events, selectEvent}: Props) => {
         <>
             {events && (
                 <div className="contrainer mt-5">
+                    <Link href="/events/add">
+                        <button className="btn btn-primary">Add Event</button>
+                    </Link>
                 <table className="table table-bordered table-hover align-middle">
                     <thead className="table-light">
                     <tr>

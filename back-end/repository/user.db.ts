@@ -23,6 +23,20 @@ const getUserById = async (id: number): Promise<User | null> => {
     }
 };
 
+const getOrganizers = async (): Promise<User[]> => {
+    try {
+        const organizers = await database.user.findMany({
+            where: {
+                role: 'organizer',
+            },
+        });
+
+        return organizers.map((userPrisma) => User.from(userPrisma));
+    } catch (error) {
+        throw new Error('Failed to retrieve organizers');
+    }
+};
+
 const addUser = async (user: User): Promise<User> => {
     try {
         const createdUser = await database.user.create({
@@ -47,4 +61,5 @@ export default {
     getAllUsers,
     getUserById,
     addUser,
+    getOrganizers
 };

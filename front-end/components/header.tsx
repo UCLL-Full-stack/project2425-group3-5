@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import React from 'react';
 
 const Header: React.FC = () => {
     return (
@@ -12,6 +13,7 @@ const Header: React.FC = () => {
                     Home
                 </Link>
                 <Link href="/events" className="nav-link px-4 fs-5 text-white">Events</Link>
+                <Link href="/venues" className="nav-link px-4 fs-5 text-white">Venues</Link>
             </nav>
         </header>
     );

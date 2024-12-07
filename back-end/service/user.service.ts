@@ -14,6 +14,10 @@ const getUserById = async (id: number): Promise<User> => {
     return user;
 };
 
+const getOrganizers = async (): Promise<User[]> => {
+    return userRepository.getOrganizers();
+};
+
 const addUser = async (userData: {
     firstname: string;
     lastname: string;
@@ -33,4 +37,5 @@ export default {
     getAllUsers,
     getUserById,
     addUser,
+    getOrganizers
 };

@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { User, Venue, StatusMessage } from '@types';
 import eventService from '../../services/EventService';
-import userService from '../../services/UserService';
-import venueService from '../../services/VenueService';
-import { User, Venue } from '@types';
+import classNames from 'classnames';
 
-const AddEventForm: React.FC = () => {
+type Props = {
+    users: User[];
+    venues: Venue[];
+};
+
+const AddEventForm: React.FC<Props> = ({ users, venues }) => {
     const [formData, setFormData] = useState({
         title: '',
         startDate: '',
@@ -14,28 +17,21 @@ const AddEventForm: React.FC = () => {
         venueId: null as number | null,
     });
 
-    const [users, setUsers] = useState<User[]>([]);
-    const [venues, setVenues] = useState<Venue[]>([]);
-    const [statusMessage, setStatusMessage] = useState('');
-    const router = useRouter();
+    const [statusMessage, setStatusMessage] = useState<StatusMessage[]>([]);
+    const [titleError, setTitleError] = useState('');
+    const [startDateError, setStartDateError] = useState('');
+    const [endDateError, setEndDateError] = useState('');
+    const [venueIdError, setVenueIdError] = useState('');
+    const [userIdError, setUserIdError] = useState('');
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const usersResponse = await userService.getAllUsers();
-                const venuesResponse = await venueService.getAllVenues();
-                const usersData = await usersResponse.json();
-                const venuesData = await venuesResponse.json();
-                console.log('Fetched Users:', usersData);
-                console.log('Fetched Venues:', venuesData);
-                setUsers(usersData);
-                setVenues(venuesData);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        fetchData();
-    }, []);
+    const cleanMessages = () => {
+        setTitleError('');
+        setStartDateError('');
+        setEndDateError('');
+        setUserIdError('');
+        setVenueIdError('');
+        setStatusMessage([]);
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -55,7 +51,12 @@ const AddEventForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setStatusMessage('');
+        cleanMessages();
+        const isValid = validate();
+        if (!isValid) {
+            setStatusMessage([{ message: 'Please correct the errors below', type: 'error' }]);
+            return;
+        }
         try {
             await eventService.createEvent({
                 title: formData.title,
@@ -64,19 +65,57 @@ const AddEventForm: React.FC = () => {
                 userIds: formData.userId ? [formData.userId] : [],
                 venueIds: formData.venueId ? [formData.venueId] : [],
             });
-            setStatusMessage('Event created successfully!');
-            router.push('/events');
+            setStatusMessage([{ message: 'Your event is created', type: 'success' }]);
         } catch (error) {
-            console.error('Error creating event:', error);
-            setStatusMessage('Error creating event. Please try again.');
+            setStatusMessage([{ message: 'Failed to create event', type: 'error' }]);
         }
+    };
+
+    const validate = (): boolean => {
+        let isValid = true;
+
+        if (!formData.title.trim()) {
+            setTitleError('Title is required');
+            isValid = false;
+        }
+        if (!formData.startDate) {
+            setStartDateError('Start date is required');
+            isValid = false;
+        }
+        if (!formData.endDate) {
+            setEndDateError('End date is required');
+            isValid = false;
+        }
+        if (!formData.userId) {
+            setUserIdError('Organizer is required');
+            isValid = false;
+        }
+        if (!formData.venueId) {
+            setVenueIdError('Venue is required');
+            isValid = false;
+        }
+        return isValid;
     };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <h1 className="text-2xl font-bold">Add New Event</h1>
 
-            {statusMessage && <p className="text-red-600">{statusMessage}</p>}
+            {statusMessage.length > 0 && (
+                <ul className="mb-4 space-y-2">
+                    {statusMessage.map(({ message, type }, index) => (
+                        <li
+                            key={index}
+                            className={classNames('text-sm p-2 rounded', {
+                                'bg-red-100 text-red-600': type === 'error',
+                                'bg-green-100 text-green-600': type === 'success',
+                            })}
+                        >
+                            {message}
+                        </li>
+                    ))}
+                </ul>
+            )}
 
             <div>
                 <label className="block text-gray-700">Title</label>
@@ -86,8 +125,8 @@ const AddEventForm: React.FC = () => {
                     value={formData.title}
                     onChange={handleChange}
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                    required
                 />
+                {titleError && <div className="text-red-600">{titleError}</div>}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -99,8 +138,8 @@ const AddEventForm: React.FC = () => {
                         value={formData.startDate}
                         onChange={handleChange}
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                        required
                     />
+                    {startDateError && <div className="text-red-600">{startDateError}</div>}
                 </div>
                 <div>
                     <label className="block text-gray-700">End Date</label>
@@ -110,22 +149,21 @@ const AddEventForm: React.FC = () => {
                         value={formData.endDate}
                         onChange={handleChange}
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                        required
                     />
+                    {endDateError && <div className="text-red-600">{endDateError}</div>}
                 </div>
             </div>
 
             <div>
-                <label className="block text-gray-700">User</label>
+                <label className="block text-gray-700">Organizer</label>
                 <select
                     name="userId"
                     value={formData.userId ?? ''}
                     onChange={(e) => handleSelectChange(e, 'userId')}
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                    required
                 >
                     <option value="" disabled>
-                        Select a user
+                        Select an organizer
                     </option>
                     {users.map((user) => (
                         <option key={user.id} value={user.id}>
@@ -133,6 +171,7 @@ const AddEventForm: React.FC = () => {
                         </option>
                     ))}
                 </select>
+                {userIdError && <div className="text-red-600">{userIdError}</div>}
             </div>
 
             <div>
@@ -142,7 +181,6 @@ const AddEventForm: React.FC = () => {
                     value={formData.venueId ?? ''}
                     onChange={(e) => handleSelectChange(e, 'venueId')}
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                    required
                 >
                     <option value="" disabled>
                         Select a venue
@@ -153,6 +191,7 @@ const AddEventForm: React.FC = () => {
                         </option>
                     ))}
                 </select>
+                {venueIdError && <div className="text-red-600">{venueIdError}</div>}
             </div>
 
             <button

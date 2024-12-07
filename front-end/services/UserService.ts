@@ -6,8 +6,17 @@ const getAllUsers = () => {
         });
 }
 
+const getAllOrganizers = () => {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/organizers',
+        {
+            method: 'GET',
+            headers: {"Content-Type": "application/json"},
+        });
+}
+
 const UserService = {
     getAllUsers,
+    getAllOrganizers,
 }
 
 export default UserService ;

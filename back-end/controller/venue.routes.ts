@@ -136,4 +136,50 @@ venueRouter.post('/', async (req: Request, res: Response, next: NextFunction) =>
     }
 });
 
+/**
+ * @swagger
+ * /venues/{id}:
+ *   put:
+ *     summary: Edit a venue
+ *     tags: [Venues]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The venue ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Venue'
+ *     responses:
+ *       200:
+ *         description: Venue updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Venue'
+ *       404:
+ *         description: Venue not found
+ */
+venueRouter.put('/:id', async (req: Request, res: Response) => {
+    const venueId = parseInt(req.params.id, 10);
+    const { name, address, capacity } = req.body;
+
+    const updatedVenue = await venueService.editVenue(venueId, {
+        name,
+        address,
+        capacity
+    });
+
+    if (!updatedVenue) {
+        return res.status(404).json({ error: 'Venue not found' });
+    }
+
+    res.status(200).json(updatedVenue);
+});
+
 export { venueRouter };
