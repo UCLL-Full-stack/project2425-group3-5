@@ -1,14 +1,14 @@
-import * as dotenv from 'dotenv';
-import express, {Request, Response, NextFunction} from 'express';
-import cors from 'cors';
 import * as bodyParser from 'body-parser';
+import cors from 'cors';
+import * as dotenv from 'dotenv';
+import express, { NextFunction, Request, Response } from 'express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
-import { eventRouter } from './controller/event.routes'
+import { eventRouter } from './controller/event.routes';
+import { rsvpRouter } from './controller/rsvp.routes';
 import { userRouter } from './controller/user.routes';
 import { venueRouter } from './controller/venue.routes';
-
 const app = express();
 dotenv.config();
 const port = process.env.APP_PORT || 3000;
@@ -17,6 +17,10 @@ app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(bodyParser.json());
 
 app.use('/events', eventRouter);
+app.use('/users', userRouter);
+app.use('/venues', venueRouter);
+app.use('/rsvps', rsvpRouter);
+app.use('/tasks', venueRouter);
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Courses API is running...' });
@@ -44,10 +48,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/users', userRouter);
-app.use('/venues', venueRouter);
-app.use('/tasks', venueRouter);
-app.use('/rsvps', venueRouter);
+
 
 
 

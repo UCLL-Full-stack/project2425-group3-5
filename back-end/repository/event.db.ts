@@ -1,7 +1,4 @@
-import { set } from 'date-fns';
 import { Event } from '../model/event';
-import { User } from '../model/user';
-import { Venue } from '../model/venue';
 import database from './database';
 
 const getAllEvents = async (): Promise<Event[]> => {
@@ -17,18 +14,13 @@ const getAllEvents = async (): Promise<Event[]> => {
     }
 };
 
-const getEventById = async (id: number): Promise<Event> => {
+const getEventById = async ({id}: {id: number}): Promise<Event | null> => {
     try {
         const eventPrisma = await database.event.findUnique({
             where: { id },
             include: { user: true, venue: true },
         });
-
-        if (!eventPrisma) {
-            throw new Error('No event found');
-        }
-
-        return Event.from(eventPrisma);
+        return eventPrisma ? Event.from(eventPrisma) : null;
     } catch (error) {
         throw new Error("DB error");
     }

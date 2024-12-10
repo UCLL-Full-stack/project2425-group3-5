@@ -8,7 +8,7 @@ const getAllEvents = async (): Promise<Event[]> => {
 }
 
 const getEventById = async (id: number): Promise<Event> => {
-    const event = await eventRepository.getEventById(id);
+    const event = await eventRepository.getEventById({id});
 
     if (!event) {
         throw new Error('Event not found');
@@ -26,7 +26,7 @@ const addEvent = async (eventData: {
 }): Promise<Event> => {
 
     const users = await Promise.all(
-        eventData.userIds.map((userId) => userRepository.getUserById(userId))
+        eventData.userIds.map((userId) => userRepository.getUserById({id: userId}))
     );
 
 

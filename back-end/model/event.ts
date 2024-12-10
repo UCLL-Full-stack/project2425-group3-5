@@ -1,14 +1,10 @@
-import { User } from './user';
-import { Venue } from './venue';
-import { Task } from './task';
-import { RSVP } from './rsvp';
 import {
     Event as EventPrisma,
-    Venue as VenuePrisma,
-    Task as TaskPrisma,
-    RSVP as RsvpPrisma,
     User as UserPrisma,
-} from '@prisma/client'
+    Venue as VenuePrisma
+} from '@prisma/client';
+import { User } from './user';
+import { Venue } from './venue';
 export class Event {
     private id?: number;
     private title: string;
@@ -103,8 +99,4 @@ export class Event {
             venues: venue.map((venue) => Venue.from(venue)),
         })
     }
-
-
-
-
 }

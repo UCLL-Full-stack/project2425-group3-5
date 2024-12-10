@@ -1,19 +1,24 @@
+import {
+    Event as EventPrisma,
+    RSVP as RsvpPrisma,
+    User as UserPrisma,
+    Venue as VenuePrisma,
+} from '@prisma/client';
+import { RsvpStatus } from '../types';
 import { Event } from './event';
 import { User } from './user';
-import { RsvpStatus } from '../types';
-import { RSVP as RsvpPrisma, Event as EventPrisma, User as UserPrisma } from '@prisma/client';
 
 export class RSVP {
     private id?: number
     private event: Event;
     private user: User;
-    private status: string;
+    private status: RsvpStatus;
 
     constructor(rsvp: {
         id?: number;
         event: Event;
         user: User;
-        status: string;
+        status: RsvpStatus;
     }) {
         this.validate(rsvp);
         this.id = rsvp.id;
@@ -26,7 +31,7 @@ export class RSVP {
         id?: number;
         event: Event;
         user: User;
-        status: string;
+        status: RsvpStatus;
     }) {
         if (!rsvp.event) throw new Error("Event ID is required");
         if (!rsvp.user) throw new Error("User ID is required");
@@ -45,7 +50,7 @@ export class RSVP {
         return this.user;
     }
 
-    getStatus(): string {
+    getStatus(): RsvpStatus {
         return this.status;
     }
 
@@ -53,25 +58,27 @@ export class RSVP {
         return (
             this.id === rsvp.getId() &&
                 this.event === rsvp.getEvent() &&
-                this.status === rsvp.getStatus() &&
-                this.user === rsvp.getUser()
+                this.user === rsvp.getUser() &&
+                this.status === rsvp.getStatus()
         )
     }
 
-    /**
     static from({
                     id,
                     event,
                     user,
                     status
-                }: RsvpPrisma & { event: EventPrisma; user: UserPrisma }) {
+                }: RsvpPrisma & {
+                    event: EventPrisma & {
+                        user: UserPrisma[]
+                        venue: VenuePrisma[]
+                    };
+                    user: UserPrisma }) {
         return new RSVP({
             id,
-            //event: Event.from(event),
+            event: Event.from(event),
             user: User.from(user),
-            status
+            status: status as RsvpStatus
         });
     }
-**/
-
 }

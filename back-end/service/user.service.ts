@@ -7,7 +7,7 @@ const getAllUsers = async (): Promise<User[]> => {
 };
 
 const getUserById = async (id: number): Promise<User> => {
-    const user = await userRepository.getUserById(id);
+    const user = await userRepository.getUserById({id});
     if (!user) {
         throw new Error('User not found');
     }
