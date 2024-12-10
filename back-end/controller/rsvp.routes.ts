@@ -238,7 +238,7 @@ rsvpRouter.get('/event/:id', async (req: Request, res: Response, next: NextFunct
  *         description: Numeric ID of the user to retrieve.
  *      responses:
  *         200:
- *            description: RSVP with id.
+ *            description: Deleted RSVP with id.
  *            content:
  *              application/json:
  *                schema:
@@ -257,7 +257,7 @@ rsvpRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction
  * @swagger
  * /rsvps/event/{id}:
  *   delete:
- *      summary: Remove all RSVPs by event id.
+ *      summary: Remove all RSVPs with event id.
  *      tags: [RSVPs]
  *      parameters:
  *       - in: path
@@ -287,7 +287,7 @@ rsvpRouter.delete('/event/:id', async (req: Request, res: Response, next: NextFu
  * @swagger
  * /rsvps/user/{id}:
  *   delete:
- *      summary: Remove all RSVPs by user id.
+ *      summary: Remove all RSVPs with user id.
  *      tags: [RSVPs]
  *      parameters:
  *       - in: path
