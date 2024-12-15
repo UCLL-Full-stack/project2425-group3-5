@@ -1,3 +1,5 @@
+import { User } from "@types"
+
 const getAllUsers = () => {
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users',
         {
@@ -14,9 +16,20 @@ const getAllOrganizers = () => {
         });
 }
 
+const login = (user: User) => {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + "/users/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+    });
+};
+
 const UserService = {
     getAllUsers,
     getAllOrganizers,
+    login
 }
 
 export default UserService ;

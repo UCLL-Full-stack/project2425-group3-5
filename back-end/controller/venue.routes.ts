@@ -165,6 +165,7 @@ venueRouter.post('/', async (req: Request, res: Response, next: NextFunction) =>
  *       404:
  *         description: Venue not found
  */
+/**
 venueRouter.put('/:id', async (req: Request, res: Response) => {
     const venueId = parseInt(req.params.id, 10);
     const { name, address, capacity } = req.body;
@@ -181,5 +182,5 @@ venueRouter.put('/:id', async (req: Request, res: Response) => {
 
     res.status(200).json(updatedVenue);
 });
-
+**/
 export { venueRouter };

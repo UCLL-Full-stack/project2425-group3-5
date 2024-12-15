@@ -1,5 +1,6 @@
 import { Venue } from '../model/venue'
 import database from './database';
+import {User} from "../model/user";
 
 
 const getAllVenues = async (): Promise<Venue[]> => {
@@ -12,7 +13,7 @@ const getAllVenues = async (): Promise<Venue[]> => {
 };
 
 
-const getVenueById = async (id: number): Promise<Venue | null> => {
+const getVenueById = async ({id}: {id: number}): Promise<Venue | null> => {
     try {
         const venuePrisma = await database.venue.findUnique({
             where: { id },

@@ -15,7 +15,7 @@ const UserOverviewTable: React.FC<Props> = ({event}: Props) => {
                 <tr>
                     <th scope="col">Firstname</th>
                     <th scope="col">Lastname</th>
-                    <th scope="col">Email</th>
+                    <th scope="col">username</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -24,7 +24,7 @@ const UserOverviewTable: React.FC<Props> = ({event}: Props) => {
                         <tr key={index}>
                             <td className="text-center">{user.firstname}</td>
                             <td className="text-center">{user.lastname}</td>
-                            <td className="text-center">{user.email}</td>
+                            <td className="text-center">{user.username}</td>
                         </tr>
                     ))
                 ) : (

@@ -27,6 +27,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { User } from '../model/user';
 import { Venue } from '../model/venue';
 import eventService from '../service/event.service';
+import {EventInput} from "../types";
 
 
 const eventRouter = express.Router();
@@ -108,8 +109,8 @@ eventRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
  *               - title
  *               - start_date
  *               - end_date
- *               - userIds
- *               - venueIds
+ *               - user
+ *               - venue
  *             properties:
  *               title:
  *                 type: string
@@ -119,11 +120,11 @@ eventRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
  *               end_date:
  *                 type: string
  *                 format: date-time
- *               userIds:
+ *               user:
  *                 type: array
  *                 items:
  *                   type: integer
- *               venueIds:
+ *               venue:
  *                 type: array
  *                 items:
  *                   type: integer
@@ -139,21 +140,13 @@ eventRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
  */
 eventRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { title, start_date, end_date, userIds, venueIds } = req.body;
-
-        const newEvent = await eventService.addEvent({
-            title,
-            start_date: new Date(start_date),
-            end_date: new Date(end_date),
-            userIds,
-            venueIds,
-        });
-
-        res.status(201).json(newEvent);
-    } catch (error) {
-        const err = error as Error;
-        res.status(400).json({ status: 'error', errorMessage: err.message });
+        const event = <EventInput>req.body;
+        const result = await eventService.addEvent(event)
+        res.status(200).json(result);
     }
-});
+    catch (error){
+        next(error)
+    }
+        });
 
 export { eventRouter };

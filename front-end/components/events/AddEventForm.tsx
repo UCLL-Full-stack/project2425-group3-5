@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { User, Venue, StatusMessage } from '@types';
-import eventService from '../../services/EventService';
+import React, {useEffect, useState} from 'react';
+import { User, Event, Venue, StatusMessage } from '@types';
+import eventService from '@services/EventService';
 import classNames from 'classnames';
 
 type Props = {
@@ -17,12 +17,21 @@ const AddEventForm: React.FC<Props> = ({ users, venues }) => {
         venueId: null as number | null,
     });
 
+
+    const [loggedInUser, setLoggedInUser] = React.useState<User | null>(null);
+    const [loggedInAdmin, setLoggedInAdmin] = React.useState(false);
+    const [loggedInOrganizer, setLoggedInOrganizer] = React.useState(false);
+    const [loggedInAttendee, setLoggedInAttendee] = React.useState(false);
     const [statusMessage, setStatusMessage] = useState<StatusMessage[]>([]);
     const [titleError, setTitleError] = useState('');
     const [startDateError, setStartDateError] = useState('');
     const [endDateError, setEndDateError] = useState('');
     const [venueIdError, setVenueIdError] = useState('');
     const [userIdError, setUserIdError] = useState('');
+
+    useEffect(() => {
+        const userName = sessionStorage.getItem('loggedInUser');
+    }, []);
 
     const cleanMessages = () => {
         setTitleError('');

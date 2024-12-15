@@ -17,14 +17,14 @@ async function seed() {
             {
                 firstname: 'John',
                 lastname: 'Doe',
-                email: 'john.doe@example.com',
+                username: 'user1',
                 password: 'password123',
                 role: 'admin',
             },
             {
                 firstname: 'Jane',
                 lastname: 'Smith',
-                email: 'jane.smith@example.com',
+                username: 'user2',
                 password: 'securepass',
                 role: 'user',
             },

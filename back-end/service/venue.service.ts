@@ -6,7 +6,7 @@ const getAllVenues = async (): Promise<Venue[]> => {
 };
 
 const getVenueById = async (id: number): Promise<Venue> => {
-    const venue = await venueRepository.getVenueById(id);
+    const venue = await venueRepository.getVenueById({id});
     if (!venue) {
         throw new Error('Venue not found');
     }
@@ -21,7 +21,7 @@ const addVenue = async (venueData: {
     const venue = new Venue(venueData);
     return venueRepository.addVenue(venue);
 };
-
+/**
 const editVenue = async (
     id: number,
     venueData: { name: string; address: string; capacity: number }
@@ -43,10 +43,10 @@ const editVenue = async (
 
     return venueRepository.editVenue(updatedVenue);
 };
-
+**/
 export default {
     getAllVenues,
     getVenueById,
     addVenue,
-    editVenue,
+    //editVenue,
 };

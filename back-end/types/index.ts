@@ -21,7 +21,7 @@ type UserInput = {
     id?: number;
     firstname: string;
     lastname: string;
-    email: string;
+    username: string;
     password: string;
     role: Role;
 };
@@ -43,7 +43,10 @@ type EventInput = {
 };
 
 export {
-    EventInput, RSVPInput, Role, RsvpStatus,
+    EventInput,
+    RSVPInput,
+    Role,
+    RsvpStatus,
     TaskInput,
     UserInput,
     VenueInput

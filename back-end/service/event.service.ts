@@ -2,6 +2,10 @@ import { Event } from '../model/event';
 import eventRepository from "../repository/event.db";
 import userRepository from "../repository/user.db";
 import venueRepository from "../repository/venue.db";
+import { Role, EventInput, UserInput, VenueInput } from "../types";
+import {UnauthorizedError} from "express-jwt";
+import userDb from "../repository/user.db";
+import venueDb from "../repository/venue.db";
 
 const getAllEvents = async (): Promise<Event[]> => {
     return eventRepository.getAllEvents();
@@ -17,38 +21,62 @@ const getEventById = async (id: number): Promise<Event> => {
     return event;
 };
 
-const addEvent = async (eventData: {
-    title: string;
-    start_date: Date;
-    end_date: Date;
-    userIds: number[];
-    venueIds: number[];
-}): Promise<Event> => {
+const addEvent = async ({
+    title,
+    start_date,
+    end_date,
+    user: userInputs,
+    venue: venueInputs,
+}: EventInput): Promise<Event> => {
+    console.log("Processing event with inputs:", { title, start_date, end_date, userInputs, venueInputs });
 
-    const users = await Promise.all(
-        eventData.userIds.map((userId) => userRepository.getUserById({id: userId}))
-    );
-
-
-    const venues = await Promise.all(
-        eventData.venueIds.map((venueId) => venueRepository.getVenueById(venueId))
-    );
-
-
-    if (users.some((user) => !user)) {
-        throw new Error("One or more users do not exist");
+    //if(user.role !== "admin" && user.role !== "organizer" && user.role !== "attendee") {
+    //    throw new UnauthorizedError('credentials_required', {message:'Ubauthorized user'})
+    //}
+    if (!Array.isArray(userInputs) || userInputs.length === 0) {
+        throw new Error("Invalid input: userInputs must be a non-empty array");
     }
-    if (venues.some((venue) => !venue)) {
-        throw new Error("One or more venues do not exist");
+    if (!Array.isArray(venueInputs) || venueInputs.length === 0) {
+        throw new Error("Invalid input: venueInputs must be a non-empty array");
     }
+    const users = []
+
+
+    for (const userInput of userInputs) {
+        if(!userInput?.id){
+            throw new Error("User with id is requring")
+        }
+        const getUsers = await userDb.getUserById({id:userInput.id})
+
+        if(!getUsers){
+            throw new Error("No users found for user")
+        }else if (getUsers){
+            users.push(getUsers)
+        }
+    }
+    const venues = []
+    for (const venueInput of venueInputs) {
+        if(!venueInput?.id){
+            throw new Error("Venue with id is requring")
+        }
+        const getVenues = await venueDb.getVenueById({id:venueInput.id})
+
+        if(!getVenues){
+            throw new Error("No venue with id is requring")
+        }else if (getVenues){
+            venues.push(getVenues)
+        }
+
+    }
+
 
 
     const event = new Event({
-        title: eventData.title,
-        start_date: eventData.start_date,
-        end_date: eventData.end_date,
-        users: users as any,
-        venues: venues as any,
+        title,
+        start_date,
+        end_date,
+        users,
+        venues,
     });
 
     return eventRepository.addEvent(event);

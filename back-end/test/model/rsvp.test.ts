@@ -12,7 +12,7 @@ test('given: valid values for rsvp, when: rsvp is created, then: rsvp is created
         username: 'user123',
         firstname: 'Timmy',
         lastname: 'Tommy',
-        email: 'timmy.tommy@email.com',
+        username: 'user1',
         password: 'pw123456',
         role: 'organiser'
     });
@@ -21,7 +21,7 @@ test('given: valid values for rsvp, when: rsvp is created, then: rsvp is created
         username: 'user123',
         firstname: 'Timmy',
         lastname: 'Tommy',
-        email: 'timmy.tommy@email.com',
+        username: 'user2',
         password: 'pw123456',
         role: 'guest'
     });
