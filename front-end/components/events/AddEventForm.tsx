@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { User, Venue, StatusMessage } from '@types';
-import eventService from '../../services/EventService';
+import { StatusMessage, User, Venue } from '@types';
 import classNames from 'classnames';
+import React, { useState } from 'react';
+import eventService from '../../services/EventService';
 
 type Props = {
     users: User[];

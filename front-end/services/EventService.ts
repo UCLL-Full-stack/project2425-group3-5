@@ -6,7 +6,7 @@ const getAllEvents = () => {
         });
 }
 
-const getEventById = (eventId: string) => {
+const getEventById = (eventId: number) => {
     return fetch(process.env.NEXT_PUBLIC_API_URL + `/events/${eventId}`,
         {
             method: 'GET',

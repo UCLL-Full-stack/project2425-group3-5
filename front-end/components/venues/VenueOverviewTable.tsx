@@ -1,6 +1,7 @@
-import React from 'react';
+import VenueService from '@services/VenueService';
 import { Venue } from '@types';
 import Link from 'next/link';
+import React from 'react';
 
 
 type Props = {
@@ -9,6 +10,11 @@ type Props = {
 
 
 const VenueOverviewTable: React.FC<Props> = ({venues}: Props) => {
+    const handleDelete = async (id: number) => {
+        await VenueService.deleteVenueById(id)
+        window.location.reload();
+    };
+
     return (
         <>
             {venues && (
@@ -40,6 +46,7 @@ const VenueOverviewTable: React.FC<Props> = ({venues}: Props) => {
                                     </Link>
                                     <button
                                         className="btn btn-danger btn-sm"
+                                        onClick={() => {handleDelete(venue.id)}}
                                     >
                                         <i className="bi bi-trash"></i> Delete
                                     </button>

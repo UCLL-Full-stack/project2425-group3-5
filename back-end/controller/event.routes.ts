@@ -24,9 +24,8 @@
  *              description: End date of event.
  */
 import express, { NextFunction, Request, Response } from 'express';
-import { User } from '../model/user';
-import { Venue } from '../model/venue';
 import eventService from '../service/event.service';
+import { EventInput } from '../types';
 
 
 const eventRouter = express.Router();
@@ -119,14 +118,14 @@ eventRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
  *               end_date:
  *                 type: string
  *                 format: date-time
- *               userIds:
+ *               users:
  *                 type: array
  *                 items:
- *                   type: integer
- *               venueIds:
+ *                   $ref: '#/components/schemas/User'
+ *               venues:
  *                 type: array
  *                 items:
- *                   type: integer
+ *                   $ref: '#/components/schemas/Venue'
  *     responses:
  *       201:
  *         description: Event successfully created.
@@ -139,16 +138,8 @@ eventRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
  */
 eventRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { title, start_date, end_date, userIds, venueIds } = req.body;
-
-        const newEvent = await eventService.addEvent({
-            title,
-            start_date: new Date(start_date),
-            end_date: new Date(end_date),
-            userIds,
-            venueIds,
-        });
-
+        const eventInput = <EventInput>req.body;
+        const newEvent = await eventService.addEvent(eventInput);
         res.status(201).json(newEvent);
     } catch (error) {
         const err = error as Error;
@@ -157,3 +148,4 @@ eventRouter.post('/', async (req: Request, res: Response, next: NextFunction) =>
 });
 
 export { eventRouter };
+

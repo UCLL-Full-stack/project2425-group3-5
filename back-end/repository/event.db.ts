@@ -26,7 +26,6 @@ const getEventById = async ({id}: {id: number}): Promise<Event | null> => {
     }
 };
 
-
 const addEvent = async (event: Event): Promise<Event> => {
     try {
         const createdEvent = await database.event.create({
@@ -48,6 +47,8 @@ const addEvent = async (event: Event): Promise<Event> => {
         throw new Error('Failed to add event');
     }
 };
+
+
 
 export default {
     getAllEvents,

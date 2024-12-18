@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import venueService from '../service/venue.service';
 
 const venueRouter = express.Router();
@@ -29,6 +29,7 @@ const venueRouter = express.Router();
  * /venues:
  *   get:
  *     summary: Get all venues
+ *     tags: [Venues]
  *     responses:
  *       200:
  *         description: A list of all venues.
@@ -54,6 +55,7 @@ venueRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
  * /venues/{id}:
  *   get:
  *     summary: Get venue by ID
+ *     tags: [Venues]
  *     parameters:
  *       - in: path
  *         name: id
@@ -92,6 +94,7 @@ venueRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
  * /venues:
  *   post:
  *     summary: Create a new venue
+ *     tags: [Venues]
  *     requestBody:
  *       required: true
  *       content:
@@ -182,4 +185,35 @@ venueRouter.put('/:id', async (req: Request, res: Response) => {
     res.status(200).json(updatedVenue);
 });
 
+/**
+ * @swagger
+ * /venues/{id}:
+ *   delete:
+ *      summary: Delete Rsvp by id.
+ *      tags: [Venues]
+ *      parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Numeric ID of the user to retrieve.
+ *      responses:
+ *         200:
+ *            description: Deleted venue with id.
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/venue'
+ */
+venueRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const rsvp = await venueService.removeVenueById(Number(req.params.id));
+        res.status(200).json(rsvp);
+    }catch(error) {
+        next(error);
+    };
+});
+
 export { venueRouter };
+

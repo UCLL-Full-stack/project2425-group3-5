@@ -36,11 +36,21 @@ const getVenueById = (venueId: number) => {
         })
 }
 
+const deleteVenueById = (id: number) => {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + `/venues/${id}`,
+        {
+            method: 'DELETE',
+            headers: {"Content-Type": "application/json"},
+        }
+    );}
+
+
 const VenueService = {
     getAllVenues,
     createVenue,
     editVenue,
     getVenueById,
+    deleteVenueById
 }
 
 export default VenueService;

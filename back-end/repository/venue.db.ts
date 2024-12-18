@@ -1,4 +1,4 @@
-import { Venue } from '../model/venue'
+import { Venue } from '../model/venue';
 import database from './database';
 
 
@@ -12,7 +12,7 @@ const getAllVenues = async (): Promise<Venue[]> => {
 };
 
 
-const getVenueById = async (id: number): Promise<Venue | null> => {
+const getVenueById = async ({id}: {id: number}): Promise<Venue | null> => {
     try {
         const venuePrisma = await database.venue.findUnique({
             where: { id },
@@ -59,10 +59,23 @@ const editVenue = async (venue: Venue): Promise<Venue> => {
     }
 };
 
+const removeVenueById = async ({id}: {id: number}): Promise<Venue> => {
+    try {
+        const venuePrisma = await database.venue.delete({
+            where: {id}
+        })
+        return Venue.from(venuePrisma);
+    }catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+}
+
 
 export default {
     getAllVenues,
     getVenueById,
     addVenue,
     editVenue,
+    removeVenueById
 }

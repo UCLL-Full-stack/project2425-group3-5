@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
 import { Event } from '@types';
 import Link from 'next/link';
+import React from 'react';
 
 
 type Props = {
@@ -23,6 +23,7 @@ const EventOverviewTable: React.FC<Props> = ({events, selectEvent}: Props) => {
                         <th className="text-center">Title</th>
                         <th className="text-center">Start date</th>
                         <th className="text-center">End date</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -33,6 +34,15 @@ const EventOverviewTable: React.FC<Props> = ({events, selectEvent}: Props) => {
                             <td className="text-center">{event.title}</td>
                             <td className="text-center">{new Date(event.start_date).toLocaleDateString()}</td>
                             <td className="text-center">{new Date(event.end_date).toLocaleDateString()}</td>
+                            <td className="text-center">
+                                <Link 
+                                    href={{
+                                        pathname: "events/rsvp",
+                                        query: {eventId: event.id}
+                                    }}>
+                                    <button className="btn btn-primary">Rsvp</button>
+                                </Link>
+                                </td>
                             </tr>
                     ))}
                     </tbody>
