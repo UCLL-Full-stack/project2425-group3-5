@@ -23,6 +23,7 @@ const EventOverviewTable: React.FC<Props> = ({events, selectEvent}: Props) => {
                         <th className="text-center">Title</th>
                         <th className="text-center">Start date</th>
                         <th className="text-center">End date</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>

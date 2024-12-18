@@ -1,5 +1,5 @@
 export type Role = "admin" | "organizer" | "attendee";
-export type RsvpStatus = "attending" | "not attending" | "maybe";
+export type RsvpStatus = "attending" | "not_attending";
 
 export type StatusMessage = {
     message: string;
