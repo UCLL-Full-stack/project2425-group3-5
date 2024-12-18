@@ -1,4 +1,5 @@
 import { RSVP } from '../model/rsvp';
+import { RsvpStatus } from '../types';
 import database from './database';
 
 const createRsvp = async (rsvp: RSVP): Promise<RSVP> => {
@@ -151,12 +152,12 @@ const getRsvpById = async ({id}: {id: number}): Promise<RSVP | null> => {
     }
 }
 
-const updateStatusFromRsvp = async (rsvp: RSVP): Promise<RSVP> => {
+const updateStatusFromRsvp = async ({rsvp, status}:{rsvp: RSVP, status: RsvpStatus}): Promise<RSVP> => {
     try {
         const rsvpPrisma = await database.rSVP.update({
             where: {id: rsvp.getId()},
             data: {
-                status: rsvp.getStatus()
+                status: status
             },
             include: {
                 event: {
