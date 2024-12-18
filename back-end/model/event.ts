@@ -11,7 +11,7 @@ export class Event {
     private start_date: Date;
     private end_date: Date;
     private users: User[];
-    private venues: Venue[];
+    private venues: Venue[] ;
 
     constructor(event: {
         id?: number;
@@ -30,15 +30,7 @@ export class Event {
         this.venues = event.venues;
     }
 
-    validate(event: {
-        id?: number;
-        title: string;
-        start_date: Date;
-        end_date: Date;
-        users: User[];
-        venues: Venue[];
-
-    }) {
+    validate(event: { id?: number; title: string; start_date: Date; end_date: Date; users?: User[]; venues?: Venue[] }) {
         if (!event.title) throw new Error("Title is required");
         if (!event.start_date) throw new Error("Start date is required");
         if (!event.end_date) throw new Error("End date is required");

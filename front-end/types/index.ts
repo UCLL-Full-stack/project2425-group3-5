@@ -22,12 +22,12 @@ export type Task = {
 }
 
 export type User = {
-    id: number;
-    firstname: string;
-    lastname: string;
-    email: string;
-    password: string;
-    role: string;
+    id?: number;
+    firstname?: string;
+    lastname?: string;
+    username?: string;
+    password?: string;
+    role?: string;
 }
 
 export type Venue = {

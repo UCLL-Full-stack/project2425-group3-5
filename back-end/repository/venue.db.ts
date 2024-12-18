@@ -1,5 +1,6 @@
 import { Venue } from '../model/venue';
 import database from './database';
+import {User} from "../model/user";
 
 
 const getAllVenues = async (): Promise<Venue[]> => {

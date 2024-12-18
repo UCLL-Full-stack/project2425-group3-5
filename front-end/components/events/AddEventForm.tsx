@@ -1,7 +1,8 @@
-import { StatusMessage, User, Venue } from '@types';
-import classNames from 'classnames';
-import React, { useState } from 'react';
-import eventService from '../../services/EventService';
+import EventService from "@services/EventService";
+import { StatusMessage, User, Venue } from "@types";
+import classNames from "classnames";
+import React, { useEffect, useState } from "react";
+
 
 type Props = {
     users: User[];
@@ -17,12 +18,21 @@ const AddEventForm: React.FC<Props> = ({ users, venues }) => {
         venueId: null as number | null,
     });
 
+
+    const [loggedInUser, setLoggedInUser] = React.useState<User | null>(null);
+    const [loggedInAdmin, setLoggedInAdmin] = React.useState(false);
+    const [loggedInOrganizer, setLoggedInOrganizer] = React.useState(false);
+    const [loggedInAttendee, setLoggedInAttendee] = React.useState(false);
     const [statusMessage, setStatusMessage] = useState<StatusMessage[]>([]);
     const [titleError, setTitleError] = useState('');
     const [startDateError, setStartDateError] = useState('');
     const [endDateError, setEndDateError] = useState('');
     const [venueIdError, setVenueIdError] = useState('');
     const [userIdError, setUserIdError] = useState('');
+
+    useEffect(() => {
+        const userName = sessionStorage.getItem('loggedInUser');
+    }, []);
 
     const cleanMessages = () => {
         setTitleError('');
@@ -58,7 +68,7 @@ const AddEventForm: React.FC<Props> = ({ users, venues }) => {
             return;
         }
         try {
-            await eventService.createEvent({
+            await EventService.createEvent({
                 title: formData.title,
                 start_date: new Date(formData.startDate),
                 end_date: new Date(formData.endDate),

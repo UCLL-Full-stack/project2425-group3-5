@@ -107,8 +107,8 @@ eventRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
  *               - title
  *               - start_date
  *               - end_date
- *               - userIds
- *               - venueIds
+ *               - user
+ *               - venue
  *             properties:
  *               title:
  *                 type: string

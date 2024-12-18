@@ -43,7 +43,7 @@ const addUser = async (user: User): Promise<User> => {
             data: {
                 firstname: user.getFirstName(),
                 lastname: user.getLastName(),
-                email: user.getEmail(),
+                username: user.getUsername(),
                 password: user.getPassword(),
                 role: user.getRole(),
             },

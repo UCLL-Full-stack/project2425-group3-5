@@ -19,9 +19,9 @@ const userRouter = express.Router();
  *         lastname:
  *           type: string
  *           description: Last name of the user.
- *         email:
+ *         username:
  *           type: string
- *           description: Email address of the user.
+ *           description: username address of the user.
  *         role:
  *           type: Role
  *           description: Role of the user.
@@ -129,7 +129,7 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  *             required:
  *               - firstname
  *               - lastname
- *               - email
+ *               - username
  *               - password
  *               - role
  *             properties:
@@ -137,7 +137,7 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  *                 type: string
  *               lastname:
  *                 type: string
- *               email:
+ *               username:
  *                 type: string
  *               password:
  *                 type: string
@@ -155,12 +155,12 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  */
 userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { firstname, lastname, email, password, role } = req.body;
+        const { firstname, lastname, username, password, role } = req.body;
 
         const newUser = await userService.addUser({
             firstname,
             lastname,
-            email,
+            username,
             password,
             role,
         });

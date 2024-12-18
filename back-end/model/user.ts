@@ -11,7 +11,7 @@ export class User {
     private id?: number;
     private firstname: string;
     private lastname: string;
-    private email: string;
+    private username: string;
     private password: string;
     private role: Role;
 
@@ -19,7 +19,7 @@ export class User {
         id?: number;
         firstname: string;
         lastname: string;
-        email: string;
+        username: string;
         password: string;
         role: Role;
     }) {
@@ -28,7 +28,7 @@ export class User {
         this.id = user.id;
         this.firstname = user.firstname;
         this.lastname = user.lastname;
-        this.email = user.email;
+        this.username = user.username;
         this.password = user.password;
         this.role = user.role;
     }
@@ -45,8 +45,8 @@ export class User {
     getLastName(): string {
         return this.lastname;
     }
-    getEmail(): string {
-        return this.email;
+    getUsername(): string {
+        return this.username;
     }
 
     getPassword(): string {
@@ -61,7 +61,7 @@ export class User {
     validate(user: {
         firstname: string;
         lastname: string;
-        email: string;
+        username: string;
         password: string;
         role: Role;
     }) {
@@ -71,8 +71,8 @@ export class User {
         if (!user.lastname?.trim()) {
             throw new Error("Last name is required");
         }
-        if (!user.email?.trim()) {
-            throw new Error("Email is required");
+        if (!user.username?.trim()) {
+            throw new Error("username is required");
         }
         if (!user.password.trim()) {
             throw new Error("Password is required");
@@ -91,7 +91,7 @@ export class User {
             this.id === user.getId() &&
             this.firstname === user.getFirstName() &&
             this.lastname === user.getLastName() &&
-            this.email === user.getEmail() &&
+            this.username === user.getUsername() &&
             this.password === user.getPassword() &&
             this.role === user.getRole()
         )
@@ -100,7 +100,7 @@ export class User {
                     id,
                     firstname,
                     lastname,
-                    email,
+                    username,
                     password,
                     role,
                 }: UserPrisma ) {
@@ -108,7 +108,7 @@ export class User {
             id,
             firstname,
             lastname,
-            email,
+            username,
             password,
             role: role as Role,
         });
