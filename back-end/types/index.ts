@@ -1,5 +1,5 @@
 type Role = "admin" | "organizer" | "attendee";
-type RsvpStatus = "attending" | "not attending";
+type RsvpStatus = "attending" | "not_attending";
 
 
 type RSVPInput = {
@@ -43,10 +43,7 @@ type EventInput = {
 };
 
 export {
-    EventInput,
-    RSVPInput,
-    Role,
-    RsvpStatus,
+    EventInput, Role, RSVPInput, RsvpStatus,
     TaskInput,
     UserInput,
     VenueInput
