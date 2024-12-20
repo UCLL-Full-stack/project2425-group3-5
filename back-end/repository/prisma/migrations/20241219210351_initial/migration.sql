@@ -34,7 +34,7 @@ CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "firstname" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "role" TEXT NOT NULL,
 
@@ -64,7 +64,7 @@ CREATE TABLE "_EventToUser" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_EventToVenue_AB_unique" ON "_EventToVenue"("A", "B");

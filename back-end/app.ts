@@ -44,7 +44,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     });
 });
 
-
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

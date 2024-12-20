@@ -21,24 +21,6 @@ const addEvent = async ({
     users: usersInput,
     venues: venueInput,
 }: EventInput): Promise<Event> => {
-    // const users = await Promise.all(
-    //     usersInput.userIds.map((userId) => userRepository.getUserById({id: userId}))
-    // );
-
-
-    // const venues = await Promise.all(
-    //     eventData.venueIds.map((venueId) => venueRepository.getVenueById(venueId))
-    // );
-
-    // const event = new Event({
-    //     title: eventData.title,
-    //     start_date: eventData.start_date,
-    //     end_date: eventData.end_date,
-    //     users: users as any,
-    //     venues: venues as any,
-    // });
-
-    // return eventRepository.addEvent(event);
     if(!titleInput) throw new Error("Event must have a title.");
     if(!start_dateInput) throw new Error("Event must have a start date.");
     if(!end_dateInput) throw new Error("Event must have end date.");
@@ -62,6 +44,8 @@ const addEvent = async ({
 
     return await eventDb.addEvent(event);
 };
+
+
 
 
 

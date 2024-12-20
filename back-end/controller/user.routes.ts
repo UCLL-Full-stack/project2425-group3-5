@@ -1,5 +1,6 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import userService from '../service/user.service';
+import { UserInput } from '../types';
 
 const userRouter = express.Router();
 
@@ -32,6 +33,7 @@ const userRouter = express.Router();
  * /users:
  *   get:
  *     summary: Get all users
+ *     tags: [Users]
  *     responses:
  *       200:
  *         description: A list of all users.
@@ -57,6 +59,7 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  * /users/organizers:
  *   get:
  *     summary: Get all organizers
+ *     tags: [Users]
  *     responses:
  *       200:
  *         description: A list of all organizers.
@@ -82,6 +85,7 @@ userRouter.get('/organizers', async (req: Request, res: Response, next: NextFunc
  * /users/{id}:
  *   get:
  *     summary: Get user by ID
+ *     tags: [Users]
  *     parameters:
  *       - in: path
  *         name: id
@@ -120,6 +124,7 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  * /users:
  *   post:
  *     summary: Create a new user
+ *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
@@ -155,16 +160,8 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  */
 userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { firstname, lastname, username, password, role } = req.body;
-
-        const newUser = await userService.addUser({
-            firstname,
-            lastname,
-            username,
-            password,
-            role,
-        });
-
+        const userInput = <UserInput>req.body;
+        const newUser = await userService.createUser(userInput);
         res.status(201).json(newUser);
     } catch (error) {
         const err = error as Error;
@@ -173,3 +170,4 @@ userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
 });
 
 export { userRouter };
+

@@ -52,6 +52,14 @@ const updateStatusFromRsvp = async ({
     const status = isValidRsvpStatus(rsvpStatus);
     const rsvp = await isValidRsvp({eventId: eventInput.id, userId: userInput.id, rsvpStatus}, {mode: "update"})
 
+    const event = rsvp.getEvent();
+    const venues = event.getVenues();
+    if(!venues) throw new Error("event don't have venue yet.");
+    const totalCapacity = venues.reduce((total, venue) => {
+        return total + venue.getCapacity();
+    }, 0);
+    if(((event.getUsers()?.length || 0) > totalCapacity) && rsvpStatus == "attending") throw new Error("event is already full.")
+        
     return await rsvpDb.updateStatusFromRsvp({rsvp, status});
 }
 

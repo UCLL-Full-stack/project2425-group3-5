@@ -190,7 +190,7 @@ venueRouter.put('/:id', async (req: Request, res: Response) => {
  * @swagger
  * /venues/{id}:
  *   delete:
- *      summary: Delete Rsvp by id.
+ *      summary: Delete venue by id.
  *      tags: [Venues]
  *      parameters:
  *       - in: path

@@ -34,7 +34,7 @@ const RSVPOverviewtable: React.FC<Props>  = ({rsvps}: Props) => {
                     {rsvps.map((rsvp, index) => (
                         <tr key={index}>
                             <td className="text-center">{rsvp.event.title}</td>
-                            <td className="text-center">{rsvp.user.email}</td>
+                            <td className="text-center">{rsvp.user.username}</td>
                             <td className="text-center">{rsvp.status} <button className="btn btn-warning btn-sm me-2" onClick={() => {handleUpdateStatus(rsvp)}}>Switch</button></td>
                             <td className="text-center"><button className="btn btn-danger btn-sm" onClick={() => {handleDelete(rsvp.id)}}>Delete</button></td>
                         </tr>
