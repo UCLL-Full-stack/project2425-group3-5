@@ -1,8 +1,8 @@
+import UserService from "@services/UserService";
 import { StatusMessage } from "@types";
 import classNames from "classnames";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import UserService from "@services/UserService";
 
 
 const UserLoginForm: React.FC = () => {
@@ -13,11 +13,9 @@ const UserLoginForm: React.FC = () => {
     const [PasswordError, setPasswordError] = useState<string | null>(null);
     const [statusMessages, setStatusMessages] = useState<StatusMessage[]>([]);
 
-
-
-
     const clearErrors = () => {
         setUserNameError(null);
+        setPasswordError(null)
         setStatusMessages([]);
     };
 
@@ -28,13 +26,17 @@ const UserLoginForm: React.FC = () => {
             setUserNameError("User name is required.");
             result = false;
         }
+        if (!password && password.trim() === "") {
+            setPasswordError("Password is required");
+            result = false;
+        }
         return result;
     };
 
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-
         clearErrors();
+        
         if (!validate()){
             return;
         }
@@ -53,8 +55,8 @@ const UserLoginForm: React.FC = () => {
             ])
             const user = await response.json();
             sessionStorage.setItem("loggedInUser", JSON.stringify({
-                token: user.token,
                 username: user.username,
+                token: user.token,
                 firstName: user.firstName,
                 lastName: user.lastName,
                 role: user.role,
@@ -71,11 +73,7 @@ const UserLoginForm: React.FC = () => {
                 }
             ])
         }
-
     }
-
-
-
     return (
         <>
             <h3 className="px-0">Login</h3>

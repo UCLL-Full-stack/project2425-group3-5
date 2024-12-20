@@ -53,7 +53,7 @@ const removeVenueById = async (id: number) => {
     const venue = await venueDb.removeVenueById({id});
         if(!venue) throw new Error(`This venue does not exist.`)
         return venue;
-}
+};
 
 export default {
     getAllVenues,

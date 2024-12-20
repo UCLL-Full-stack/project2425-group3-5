@@ -57,7 +57,7 @@ const autehntication = async ({username, password}: UserInput): Promise<Authenti
         username,
         fullname: `${user.getFirstName()} ${user?.getLastName()}`
     }
-}
+};
 
 const isValidRole = (role: Role) => {
     const validRole: Role[] = ["admin", "organizer", "attendee"];

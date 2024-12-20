@@ -1,12 +1,11 @@
 import { Event } from '@types';
-import React from 'react'
+import React from 'react';
 
 type Props = {
     event: Event;
 }
 
 const UserOverviewTable: React.FC<Props> = ({event}: Props) => {
-    console.log('Event passed to UserOverviewTable:', event);
     return (
         <>
             <h2>Users of a event {event.title}</h2>
