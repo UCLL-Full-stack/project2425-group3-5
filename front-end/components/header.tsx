@@ -29,12 +29,9 @@ const Header: React.FC = () => {
                 <div>
                 {loggedInUser ? (
                 <>
-                <div className="px-4 text-white text-xl rounded-lg flex-right flex-initial mr-0 flex-initial text-right">
-                Welcome, {loggedInUser}!
-                </div>
                 <button
                 onClick={handleLogout}
-                className="nav-link px-4 fs-5 text-white"
+                className="btn btn-primary"
                 >
                 Logout
                 </button>
