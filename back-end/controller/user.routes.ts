@@ -8,6 +8,30 @@ const userRouter = express.Router();
  * @swagger
  * components:
  *   schemas:
+ *     AuthenticationResponse:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *           description: Authentication response.
+ *         token:
+ *           type: string
+ *           description: JWT access token.
+ *         username:
+ *           type: string
+ *           description: User name.
+ *         fullname:
+ *           type: string
+ *           description: Full name.
+ *     AuthenticationRequest:
+ *       type: object
+ *       properties:
+ *         username:
+ *           type: string
+ *           description: User name.
+ *         password:
+ *           type: string
+ *           description: User password.
  *     User:
  *       type: object
  *       properties:
@@ -26,6 +50,26 @@ const userRouter = express.Router();
  *         role:
  *           type: Role
  *           description: Role of the user.
+ *     UserInput:
+ *       type: object
+ *       properties:
+ *         firstName:
+ *           type: string
+ *           description: First name.
+ *         lastName:
+ *           type: string
+ *           description: Last name.
+ *         username:
+ *           type: string
+ *           description: User name.
+ *         password:
+ *           type: string
+ *           description: User password.
+ *         role:
+ *           $ref: '#/components/schemas/Role'
+ *     Role:
+ *       type: string
+ *       enum: [admin, organizer, attendee]
  */
 
 /**
@@ -168,6 +212,36 @@ userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
     } catch (error) {
         const err = error as Error;
         res.status(400).json({ status: 'error', errorMessage: err.message });
+    }
+});
+
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     tags: [Users]
+ *     summary: Login with username/password. Return JWT token when successful.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/AuthenticationRequest'
+ *     responses:
+ *       200:
+ *         description: Login success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthenticationResponse'
+ */
+userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+    try{
+        const userInput = <UserInput>req.body;
+        const response = await userService.autehntication(userInput);
+        res.status(200).json({message: 'Authentication succusful', ...response})
+    }catch (error) {
+        next(error)
     }
 });
 

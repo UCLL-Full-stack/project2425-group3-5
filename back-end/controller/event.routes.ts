@@ -1,27 +1,63 @@
 /**
  * @swagger
  *   components:
- *    securitySchemes:
- *     bearerAuth:
- *      type: http
- *      scheme: bearer
- *      bearerFormat: JWT
- *    schemas:
- *      Event:
- *          type: object
- *          properties:
- *            id:
- *              type: number
- *              format: int64
- *            title:
- *              type: string
- *              description: Event name.
- *            start_date:
- *              type: string
- *              description: Start date of event.
- *            end_date:
- *              type: string
- *              description: End date of event.
+ *     schemas:
+ *       Event:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: number
+ *               format: int64
+ *             title:
+ *               type: string
+ *               description: Event name.
+ *             start_date:
+ *               type: string
+ *               description: Start date of event.
+ *             end_date:
+ *               type: string
+ *               description: End date of event.
+ *             users:
+ *               type: array
+ *               description: List of users.
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *             venues:
+ *               type: array
+ *               description: List of venues.
+ *               items:
+ *                 $ref: '#/components/schemas/Venue'
+ *       EventInput:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: number
+ *               format: int64
+ *             title:
+ *               type: string
+ *               description: Event name.
+ *             start_date:
+ *               type: string
+ *               description: Start date of event.
+ *             end_date:
+ *               type: string
+ *               description: End date of event.
+ *             users:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: number
+ *                     format: int64
+ *             venues:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: number
+ *                     format: int64
  */
 import express, { NextFunction, Request, Response } from 'express';
 import eventService from '../service/event.service';

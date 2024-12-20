@@ -23,6 +23,18 @@ const venueRouter = express.Router();
  *         capacity:
  *           type: number
  *           description: Maximum capacity of the venue.
+ *     VenueInput:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Name of the venue.
+ *         address:
+ *           type: string
+ *           description: Address of the venue.
+ *         capacity:
+ *           type: number
+ *           description: Maximum capacity of the venue.
  */
 
 /**
