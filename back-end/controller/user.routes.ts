@@ -32,6 +32,8 @@ const userRouter = express.Router();
  * @swagger
  * /users:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get all users
  *     tags: [Users]
  *     responses:
@@ -58,6 +60,8 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  * @swagger
  * /users/organizers:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get all organizers
  *     tags: [Users]
  *     responses:
@@ -84,6 +88,8 @@ userRouter.get('/organizers', async (req: Request, res: Response, next: NextFunc
  * @swagger
  * /users/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get user by ID
  *     tags: [Users]
  *     parameters:
@@ -117,6 +123,8 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  * @swagger
  * /users:
  *   post:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Create a new user
  *     tags: [Users]
  *     requestBody:

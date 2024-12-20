@@ -29,6 +29,8 @@ const venueRouter = express.Router();
  * @swagger
  * /venues:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get all venues
  *     tags: [Venues]
  *     responses:
@@ -55,6 +57,8 @@ venueRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
  * @swagger
  * /venues/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get venue by ID
  *     tags: [Venues]
  *     parameters:
@@ -93,6 +97,8 @@ venueRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
  * @swagger
  * /venues:
  *   post:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Create a new venue
  *     tags: [Venues]
  *     requestBody:
@@ -139,6 +145,8 @@ venueRouter.post('/', async (req: Request, res: Response, next: NextFunction) =>
  * @swagger
  * /venues/{id}:
  *   put:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Edit a venue
  *     tags: [Venues]
  *     parameters:
@@ -186,6 +194,8 @@ venueRouter.put('/:id', async (req: Request, res: Response) => {
  * @swagger
  * /venues/{id}:
  *   delete:
+ *      security:
+ *        - bearerAuth: []
  *      summary: Delete venue by id.
  *      tags: [Venues]
  *      parameters:

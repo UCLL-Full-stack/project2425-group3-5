@@ -5,6 +5,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
+import { expressjwt } from 'express-jwt';
 import { eventRouter } from './controller/event.routes';
 import { rsvpRouter } from './controller/rsvp.routes';
 import { userRouter } from './controller/user.routes';
@@ -15,6 +16,15 @@ const port = process.env.APP_PORT || 3000;
 
 app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(bodyParser.json());
+
+app.use(
+    expressjwt({
+        secret: process.env.JWT_SECRET || 'default_secret',
+        algorithms: ['HS256'],
+    }).unless({
+        path: ['/api-docs', /^\/api-docs\/.*/, '/users/login', '/status'],
+    })
+);
 
 app.use('/events', eventRouter);
 app.use('/users', userRouter);
@@ -47,9 +57,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-
-
 
 app.listen(port || 3000, () => {
     console.log(`Courses API is running on port ${port}.`);

@@ -46,6 +46,8 @@ export const rsvpRouter = express.Router();
  * @swagger
  * /rsvps:
  *   post:
+ *      security:
+ *        - bearerAuth: []
  *      summary: Create a new RSVP with existing event and user.
  *      tags: [RSVPs]
  *      requestBody:
@@ -76,6 +78,8 @@ rsvpRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
  * @swagger
  * /rsvps:
  *   get:
+ *      security:
+ *        - bearerAuth: []
  *      summary: Get all RSVPs.
  *      tags: [RSVPs]
  *      responses:
@@ -101,6 +105,8 @@ rsvpRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  * @swagger
  * /rsvps:
  *   put:
+ *      security:
+ *        - bearerAuth: []
  *      summary: Update RSVP data.
  *      tags: [RSVPs]
  *      requestBody:
@@ -133,6 +139,8 @@ rsvpRouter.put('/', async (req: Request, res: Response, next: NextFunction) => {
  * @swagger
  * /rsvps/{id}:
  *   get:
+ *      security:
+ *        - bearerAuth: []
  *      summary: Get Rsvp by id.
  *      tags: [RSVPs]
  *      parameters:
@@ -163,6 +171,8 @@ rsvpRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  * @swagger
  * /rsvps/user/{id}:
  *   get:
+ *      security:
+ *        - bearerAuth: []
  *      summary: Get All RSVPs by user id.
  *      tags: [RSVPs]
  *      parameters:
@@ -195,6 +205,8 @@ rsvpRouter.get('/user/:id', async (req: Request, res: Response, next: NextFuncti
  * @swagger
  * /rsvps/event/{id}:
  *   get:
+ *      security:
+ *        - bearerAuth: []
  *      summary: Get all RSVPs by event id.
  *      tags: [RSVPs]
  *      parameters:
@@ -227,6 +239,8 @@ rsvpRouter.get('/event/:id', async (req: Request, res: Response, next: NextFunct
  * @swagger
  * /rsvps/{id}:
  *   delete:
+ *      security:
+ *        - bearerAuth: []
  *      summary: Delete Rsvp by id.
  *      tags: [RSVPs]
  *      parameters:
@@ -257,6 +271,8 @@ rsvpRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction
  * @swagger
  * /rsvps/event/{id}:
  *   delete:
+ *      security:
+ *        - bearerAuth: []
  *      summary: Remove all RSVPs with event id.
  *      tags: [RSVPs]
  *      parameters:
@@ -287,6 +303,8 @@ rsvpRouter.delete('/event/:id', async (req: Request, res: Response, next: NextFu
  * @swagger
  * /rsvps/user/{id}:
  *   delete:
+ *      security:
+ *        - bearerAuth: []
  *      summary: Remove all RSVPs with user id.
  *      tags: [RSVPs]
  *      parameters:
