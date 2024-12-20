@@ -1,20 +1,21 @@
 import bcrypt from 'bcrypt';
 import { User } from '../model/user';
-import { default as userDb, default as userRepository } from '../repository/user.db';
-import { Role, UserInput } from '../types';
+import userDb from '../repository/user.db';
+import { AuthenticationResponse, Role, UserInput } from '../types';
+import { generateJwtToken } from '../util/jwt';
 
 const getAllUsers = async (): Promise<User[]> => {
-    return userRepository.getAllUsers();
+    return userDb.getAllUsers();
 };
 
 const getUserById = async (id: number): Promise<User> => {
-    const user = await userRepository.getUserById({id});
+    const user = await userDb.getUserById({id});
     if (!user) throw new Error('User not found');
     return user;
 };
 
 const getOrganizers = async (): Promise<User[]> => {
-    return userRepository.getOrganizers();
+    return userDb.getOrganizers();
 };
 
 const createUser = async ({
@@ -42,22 +43,33 @@ const createUser = async ({
         role
     });
         
-    return userRepository.addUser(user);
+    return userDb.addUser(user);
 };
 
+const autehntication = async ({username, password}: UserInput): Promise<AuthenticationResponse> => {
+    const user = await userDb.getUserByUsername({username});
+    if(!user) throw new Error("User does not exist.");
 
-
+    const isValidPassword = await bcrypt.compare(password, user.getPassword());
+    if(!isValidPassword) throw new Error("Incorrect password");
+    return {
+        token: generateJwtToken({username}),
+        username,
+        fullname: `${user.getFirstName()} ${user?.getLastName()}`
+    }
+}
 
 const isValidRole = (role: Role) => {
     const validRole: Role[] = ["admin", "organizer", "attendee"];
     if(!validRole.includes(role)) throw new Error("Role status is invalid.")
     return role
-}
+};
 
 
 export default {
     getAllUsers,
     getUserById,
     createUser,
-    getOrganizers
+    getOrganizers,
+    autehntication
 };

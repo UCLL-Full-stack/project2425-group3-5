@@ -35,7 +35,7 @@ const EventOverviewTable: React.FC<Props> = ({events, selectEvent}: Props) => {
                             <td className="text-center">{new Date(event.start_date).toLocaleDateString()}</td>
                             <td className="text-center">{new Date(event.end_date).toLocaleDateString()}</td>
                             <td className="text-center">
-                                <Link 
+                                <Link
                                     href={{
                                         pathname: "events/rsvp",
                                         query: {eventId: event.id}

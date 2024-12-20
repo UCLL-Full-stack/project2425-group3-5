@@ -1,7 +1,6 @@
-import Head from 'next/head';
-import Image from 'next/image';
 import Header from '@components/header';
 import styles from '@styles/home.module.css';
+import Head from 'next/head';
 
 const Home: React.FC = () => {
     return (
@@ -20,7 +19,7 @@ const Home: React.FC = () => {
 
                 <div className={styles.description}>
                     <p>
-
+                    Welcome to this private eventing organising website!
                     </p>
                 </div>
             </main>

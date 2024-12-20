@@ -45,11 +45,6 @@ const addEvent = async ({
     return await eventDb.addEvent(event);
 };
 
-
-
-
-
-
 export default {
     getAllEvents,
     getEventById,

@@ -35,6 +35,7 @@ const eventRouter = express.Router();
  * /events:
  *   get:
  *     summary: Get a list of all events.
+ *     tags: [events]
  *     responses:
  *       200:
  *         description: A JSON array of all events.
@@ -58,6 +59,7 @@ eventRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
  * /events/{id}:
  *   get:
  *     summary: Get event details by ID.
+ *     tags: [events]
  *     parameters:
  *       - in: path
  *         name: id
@@ -96,6 +98,7 @@ eventRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
  * /events:
  *   post:
  *     summary: Create a new event.
+ *     tags: [events]
  *     requestBody:
  *       required: true
  *       content:

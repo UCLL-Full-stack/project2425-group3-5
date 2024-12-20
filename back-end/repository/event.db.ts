@@ -48,8 +48,6 @@ const addEvent = async (event: Event): Promise<Event> => {
     }
 };
 
-
-
 export default {
     getAllEvents,
     getEventById,
