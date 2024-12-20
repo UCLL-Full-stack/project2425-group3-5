@@ -1,13 +1,13 @@
 import { Venue } from '../model/venue';
-import { default as venueDb, default as venueRepository } from '../repository/venue.db';
+import venueDb from '../repository/venue.db';
 import { VenueInput } from '../types';
 
 const getAllVenues = async (): Promise<Venue[]> => {
-    return venueRepository.getAllVenues();
+    return venueDb.getAllVenues();
 };
 
 const getVenueById = async (id: number): Promise<Venue> => {
-    const venue = await venueRepository.getVenueById({id});
+    const venue = await venueDb.getVenueById({id});
     if (!venue) throw new Error('Venue not found');
     return venue;
 };
@@ -24,14 +24,14 @@ const createVenue = async ({
 
     if(exist) throw new Error("Venue with name already exist.")
     const venue = new Venue({name: nameInput, address: addressInput, capacity: capacityInput});
-    return venueRepository.addVenue(venue);
+    return venueDb.addVenue(venue);
 };
 
 const editVenue = async (
     id: number,
     venueData: { name: string; address: string; capacity: number }
 ): Promise<Venue | null> => {
-    const venue = await venueRepository.getVenueById({id});
+    const venue = await venueDb.getVenueById({id});
 
     if (!venue) {
         throw new Error('Venue not found');
@@ -46,7 +46,7 @@ const editVenue = async (
         ...venueData,
     });
 
-    return venueRepository.editVenue(updatedVenue);
+    return venueDb.editVenue(updatedVenue);
 };
 
 const removeVenueById = async (id: number) => {

@@ -197,6 +197,30 @@ const removeRsvpById = async ({id}: {id: number}): Promise<RSVP | null> => {
     }
 }
 
+const getAllRsvpWithAttendingStatusByEventId = async ({id}:{id: number}):Promise<RSVP[]> => {
+    try {
+        const rsvpsPrisma = await database.rSVP.findMany({
+            where: {
+                eventId: id,
+                status: "attending"
+            },
+            include: {
+                event: {
+                    include: {
+                        user: true,
+                        venue: true,
+                    }
+                },
+                user: true,
+            }
+        })
+        return rsvpsPrisma.map((rsvpsPrisma) => RSVP.from(rsvpsPrisma));
+    }catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+}
+
 const removeAllRsvpByUserId = async ({id}: {id: number}): Promise<number> => {
     try {
         const rsvpsPrisma = await database.rSVP.deleteMany({
@@ -232,6 +256,7 @@ export default {
     getAllRsvpsFromUserByUserId,
     getAllRsvpsFromEventByEventId,
     getRsvpById,
+    getAllRsvpWithAttendingStatusByEventId,
     updateStatusFromRsvp,
     removeRsvpById,
     removeAllRsvpByUserId,

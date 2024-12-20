@@ -7,7 +7,8 @@ const getAllUsers = async (): Promise<User[]> => {
         const usersPrisma = await database.user.findMany();
         return usersPrisma.map((userPrisma) => User.from(userPrisma));
     } catch (error) {
-        throw new Error('Failed to retrieve users');
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
     }
 };
 
@@ -19,7 +20,8 @@ const getUserById = async ({id}: {id: number}): Promise<User | null> => {
 
         return userPrisma ? User.from(userPrisma) : null;
     } catch (error) {
-        throw new Error('Failed to retrieve user');
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
     }
 };
 
@@ -31,7 +33,8 @@ const getUserByUsername = async ({username}: {username: string}): Promise<User |
 
         return userPrisma ? User.from(userPrisma) : null;
     } catch (error) {
-        throw new Error('Failed to retrieve user');
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
     }
 };
 
@@ -45,7 +48,8 @@ const getOrganizers = async (): Promise<User[]> => {
 
         return organizers.map((userPrisma) => User.from(userPrisma));
     } catch (error) {
-        throw new Error('Failed to retrieve organizers');
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
     }
 };
 
@@ -59,11 +63,12 @@ const getAttendees = async (): Promise<User[]> => {
 
         return organizers.map((userPrisma) => User.from(userPrisma));
     } catch (error) {
-        throw new Error('Failed to retrieve organizers');
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
     }
 };
 
-const addUser = async (user: User): Promise<User> => {
+const createUser = async (user: User): Promise<User> => {
     try {
         const createdUser = await database.user.create({
             data: {
@@ -77,17 +82,17 @@ const addUser = async (user: User): Promise<User> => {
 
         return User.from(createdUser);
     } catch (error) {
-        throw new Error('Failed to add user');
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
     }
 };
-
 
 
 export default {
     getAllUsers,
     getUserById,
     getUserByUsername,
-    addUser,
+    createUser,
     getOrganizers,
-    getAttendees
+    getAttendees,
 };

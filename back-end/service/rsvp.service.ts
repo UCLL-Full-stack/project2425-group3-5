@@ -17,7 +17,7 @@ const createRsvp = async ({
     const rsvp = await isValidRsvp({eventId: eventInput.id, userId: userInput.id, rsvpStatus}, {mode: "create"})
 
     return await rsvpDb.createRsvp(rsvp);
-}
+};
 
 const getAllRsvp = async (): Promise<RSVP[]> => await rsvpDb.getAllRsvp();
 
@@ -26,19 +26,19 @@ const getRsvpById = async (id: number): Promise<RSVP> => {
     const existingRsvp = await rsvpDb.getRsvpById({id});
     if(!existingRsvp) throw new Error(`This Rsvp does not exist.`)
     return existingRsvp;
-}
+};
 
 const getAllRsvpsFromEventByEventId = async (id: number): Promise<RSVP[]> => {
     const event = await eventDb.getEventById({id});
     if(!event) throw new Error(`Event with id: ${id} does not exist.`)
     return rsvpDb.getAllRsvpsFromEventByEventId({eventId: id})
-}
+};
 
 const getAllRsvpsFromUserByUserId = async (id: number): Promise<RSVP[]> => {
     const user = await eventDb.getEventById({id});
     if(!user) throw new Error(`User with id: ${id} does not exist.`)
     return rsvpDb.getAllRsvpsFromUserByUserId({userId: id})
-}
+};
 
 const updateStatusFromRsvp = async ({
     event: eventInput,
@@ -51,23 +51,24 @@ const updateStatusFromRsvp = async ({
 
     const status = isValidRsvpStatus(rsvpStatus);
     const rsvp = await isValidRsvp({eventId: eventInput.id, userId: userInput.id, rsvpStatus}, {mode: "update"})
+    const venues = rsvp.getEvent().getVenues();
+    const attendees = await rsvpDb.getAllRsvpWithAttendingStatusByEventId({id: eventInput.id})
 
-    const event = rsvp.getEvent();
-    const venues = event.getVenues();
     if(!venues) throw new Error("event don't have venue yet.");
     const totalCapacity = venues.reduce((total, venue) => {
         return total + venue.getCapacity();
     }, 0);
-    if(((event.getUsers()?.length || 0) > totalCapacity) && rsvpStatus == "attending") throw new Error("event is already full.")
-        
+
+    if((attendees.length >= totalCapacity) && rsvpStatus == "attending") throw new Error("event is already full.")
+    
     return await rsvpDb.updateStatusFromRsvp({rsvp, status});
-}
+};
 
 const removeRsvpById = async (id: number) => {
     const rsvp = await rsvpDb.removeRsvpById({id});
     if(!rsvp) throw new Error(`This Rsvp does not exist.`)
     return rsvp;
-}
+};
 
 const removeAllRsvpByEventId = async (id: number) => {
     const event = await eventDb.getEventById({id});
@@ -97,13 +98,13 @@ const isValidRsvp = async ({eventId, userId, rsvpStatus}: {eventId: number, user
     if(existingRsvp && mode == "update") return existingRsvp;
     const rsvp = new RSVP({event, user, status});
     return rsvp
-}
+};
 
 const isValidRsvpStatus = (rsvpStatus: RsvpStatus) => {
     const validRsvpStatus: RsvpStatus[] = ["attending" , "not_attending"];
     if(!validRsvpStatus.includes(rsvpStatus)) throw new Error("RSVP status is invalid.")
     return rsvpStatus
-}
+};
 
 export default {
     createRsvp,

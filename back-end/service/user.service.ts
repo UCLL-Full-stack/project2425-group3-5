@@ -43,7 +43,7 @@ const createUser = async ({
         role
     });
         
-    return userDb.addUser(user);
+    return userDb.createUser(user);
 };
 
 const autehntication = async ({username, password}: UserInput): Promise<AuthenticationResponse> => {
