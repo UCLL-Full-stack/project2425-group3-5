@@ -183,12 +183,46 @@ eventRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
 eventRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const eventInput = <EventInput>req.body;
-        const newEvent = await eventService.addEvent(eventInput);
+        const newEvent = await eventService.createEvent(eventInput);
         res.status(201).json(newEvent);
     } catch (error) {
         const err = error as Error;
         res.status(400).json({ status: 'error', errorMessage: err.message });
     }
+});
+
+/**
+ * @swagger
+ * /events/{id}:
+ *   delete:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get event details by ID.
+ *     tags: [events]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Numeric ID of the event to get.
+ *     responses:
+ *       200:
+ *         description: Event details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Event'
+ *       404:
+ *         description: Event not found.
+ */
+eventRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const event = await eventService.removeEventById(Number(req.params.id));
+        res.status(200).json(event);
+    } catch(error) {
+        next(error);
+    };
 });
 
 export { eventRouter };

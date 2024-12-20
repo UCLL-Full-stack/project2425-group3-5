@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { User } from '../model/user';
-import { Event } from '../model/event';
 import { Venue } from '../model/venue';
 
 const prisma = new PrismaClient();
@@ -17,8 +16,8 @@ async function seed() {
             {
                 firstname: 'John',
                 lastname: 'Doe',
-                username: 'user1',
-                password: 'password123',
+                username: 'admin',
+                password: 'admin123',
                 role: 'admin',
             },
             {

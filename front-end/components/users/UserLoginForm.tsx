@@ -115,7 +115,7 @@ const UserLoginForm: React.FC = () => {
                 <div className="block mb-2 text-sm font-medium">
                     <input
                         id="passwordInput"
-                        type="text"
+                        type="password"
                         value={password}
                         onChange={(event) => {
                             setPassword(event.target.value);
@@ -132,6 +132,22 @@ const UserLoginForm: React.FC = () => {
                     Login
                 </button>
             </form>
+            <table className="table table-bordered table-hover align-middle">
+            <thead className="table-light">
+            <tr>
+                <th className="text-center">username</th>
+                <th className="text-center">password</th>
+                <th className="text-center">role</th>
+            </tr>
+            </thead>
+            <tbody>
+                    <tr key={1}>
+                            <td className="text-center">admin</td>
+                            <td className="text-center">admin123</td>
+                            <td className="text-center">admin</td>
+                    </tr>
+            </tbody>
+            </table>
         </>
     );
 };

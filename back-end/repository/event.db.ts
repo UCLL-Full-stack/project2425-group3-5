@@ -1,6 +1,28 @@
 import { Event } from '../model/event';
 import database from './database';
 
+const createEvent = async (event: Event): Promise<Event> => {
+    try {
+        const createdEvent = await database.event.create({
+            data: {
+                title: event.getTitle(),
+                start_date: event.getStartDate(),
+                end_date: event.getEndDate(),
+                user: {
+                    connect: event.getUsers()?.map((user) => ({ id: user.getId() })),
+                },
+                venue: {
+                    connect: event.getVenues()?.map((venue) => ({ id: venue.getId() })),
+                },
+            },
+            include: { user: true, venue: true },
+        });
+        return Event.from(createdEvent);
+    } catch (error) {
+        throw new Error('Failed to add event');
+    }
+};
+
 const getAllEvents = async (): Promise<Event[]> => {
     try {
         const events = await database.event.findMany({
@@ -26,30 +48,22 @@ const getEventById = async ({id}: {id: number}): Promise<Event | null> => {
     }
 };
 
-const addEvent = async (event: Event): Promise<Event> => {
+const removeEventById = async ({id}: {id: number}): Promise<void> => {
     try {
-        const createdEvent = await database.event.create({
-            data: {
-                title: event.getTitle(),
-                start_date: event.getStartDate(),
-                end_date: event.getEndDate(),
-                user: {
-                    connect: event.getUsers()?.map((user) => ({ id: user.getId() })),
-                },
-                venue: {
-                    connect: event.getVenues()?.map((venue) => ({ id: venue.getId() })),
-                },
-            },
+        await database.event.delete({
+            where: {id},
             include: { user: true, venue: true },
-        });
-        return Event.from(createdEvent);
-    } catch (error) {
-        throw new Error('Failed to add event');
+        })
+    }catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
     }
-};
+}
+
 
 export default {
+    createEvent,
     getAllEvents,
     getEventById,
-    addEvent,
+    removeEventById
 }

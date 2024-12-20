@@ -3,8 +3,8 @@ import React from "react";
 
 
 type Props = {
-    onSubmit: (formData: {attendee: User}) => void;
-  };
+    onSubmit: (formData: {user: User; event:Event}) => void;
+    };
 
 const AddRSVPform: React.FC<Props>  = ({onSubmit}) => {
     return(

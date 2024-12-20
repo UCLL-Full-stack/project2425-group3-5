@@ -6,15 +6,7 @@ import { EventInput } from '../types';
 import userService from './user.service';
 import venueService from './venue.service';
 
-const getAllEvents = async (): Promise<Event[]> => eventDb.getAllEvents();
-
-const getEventById = async (id: number): Promise<Event> => {
-    const event = await eventDb.getEventById({id});
-    if (!event) throw new Error('Event not found');
-    return event;
-};
-
-const addEvent = async ({
+const createEvent = async ({
     title: titleInput,
     start_date: start_dateInput,
     end_date: end_dateInput,
@@ -42,11 +34,26 @@ const addEvent = async ({
         venues
     })
 
-    return await eventDb.addEvent(event);
+    return await eventDb.createEvent(event);
 };
 
+const getAllEvents = async (): Promise<Event[]> => eventDb.getAllEvents();
+
+const getEventById = async (id: number): Promise<Event> => {
+    const event = await eventDb.getEventById({id});
+    if (!event) throw new Error('Event not found');
+    return event;
+};
+
+
+const removeEventById = async (id: number): Promise<void> => {
+    getEventById(id)
+    eventDb.removeEventById({id})
+}
+
 export default {
+    createEvent,
     getAllEvents,
     getEventById,
-    addEvent,
+    removeEventById
 }
