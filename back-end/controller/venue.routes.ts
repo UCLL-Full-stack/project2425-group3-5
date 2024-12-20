@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import venueService from '../service/venue.service';
+import { VenueInput } from '../types';
 
 const venueRouter = express.Router();
 
@@ -75,8 +76,7 @@ venueRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
  */
 venueRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const venueId = parseInt(req.params.id, 10);
-        const venue = await venueService.getVenueById(venueId);
+        const venue = await venueService.getVenueById(Number(req.params.id));
 
         if (!venue) {
             return res.status(404).json({ status: 'error', errorMessage: 'Venue not found' });
@@ -124,13 +124,9 @@ venueRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
  */
 venueRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { name, address, capacity } = req.body;
+        const venueInput = <VenueInput>req.body;
 
-        const newVenue = await venueService.addVenue({
-            name,
-            address,
-            capacity,
-        });
+        const newVenue = await venueService.createVenue(venueInput);
 
         res.status(201).json(newVenue);
     } catch (error) {

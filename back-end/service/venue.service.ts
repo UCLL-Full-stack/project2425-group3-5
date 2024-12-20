@@ -1,5 +1,6 @@
 import { Venue } from '../model/venue';
 import { default as venueDb, default as venueRepository } from '../repository/venue.db';
+import { VenueInput } from '../types';
 
 const getAllVenues = async (): Promise<Venue[]> => {
     return venueRepository.getAllVenues();
@@ -11,12 +12,18 @@ const getVenueById = async (id: number): Promise<Venue> => {
     return venue;
 };
 
-const addVenue = async (venueData: {
-    name: string;
-    address: string;
-    capacity: number;
-}): Promise<Venue> => {
-    const venue = new Venue(venueData);
+const createVenue = async ({
+    name: nameInput,
+    address: addressInput,
+    capacity: capacityInput,
+}: VenueInput): Promise<Venue> => {
+    if(!nameInput) throw new Error("Venue need a name.");
+    if(!addressInput) throw new Error("Venue need a address.");
+    if(!capacityInput) throw new Error("Venue need a capacity.");
+    const exist = await venueDb.getVenueByName({name: nameInput});
+
+    if(exist) throw new Error("Venue with name already exist.")
+    const venue = new Venue({name: nameInput, address: addressInput, capacity: capacityInput});
     return venueRepository.addVenue(venue);
 };
 
@@ -51,7 +58,7 @@ const removeVenueById = async (id: number) => {
 export default {
     getAllVenues,
     getVenueById,
-    addVenue,
+    createVenue,
     editVenue,
     removeVenueById
 };

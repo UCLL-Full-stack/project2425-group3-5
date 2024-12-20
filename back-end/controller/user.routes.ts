@@ -105,13 +105,7 @@ userRouter.get('/organizers', async (req: Request, res: Response, next: NextFunc
  */
 userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = parseInt(req.params.id, 10);
-        const user = await userService.getUserById(userId);
-
-        if (!user) {
-            return res.status(404).json({ status: 'error', errorMessage: 'User not found' });
-        }
-
+        const user = await userService.getUserById(Number(req.params.id));
         res.status(200).json(user);
     } catch (error) {
         const err = error as Error;

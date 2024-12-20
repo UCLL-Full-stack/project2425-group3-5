@@ -77,8 +77,7 @@ eventRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
  */
 eventRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const eventId = parseInt(req.params.id, 10);
-        const event = await eventService.getEventById(eventId);
+        const event = await eventService.getEventById(Number(req.params.id));
 
         if (!event) {
             return res.status(404).json({ status: 'error', errorMessage: 'Event not found' });

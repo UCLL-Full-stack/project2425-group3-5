@@ -1,6 +1,5 @@
 import { Venue } from '../model/venue';
 import database from './database';
-import {User} from "../model/user";
 
 
 const getAllVenues = async (): Promise<Venue[]> => {
@@ -17,6 +16,19 @@ const getVenueById = async ({id}: {id: number}): Promise<Venue | null> => {
     try {
         const venuePrisma = await database.venue.findUnique({
             where: { id },
+        });
+
+        return venuePrisma ? Venue.from(venuePrisma) : null;
+    } catch (error) {
+        throw new Error('Failed to retrieve venue');
+    }
+};
+const getVenueByName = async ({name}: {name: string}): Promise<Venue | null> => {
+    try {
+        const venuePrisma = await database.venue.findFirst({
+            where: {
+                name
+            },
         });
 
         return venuePrisma ? Venue.from(venuePrisma) : null;
@@ -76,6 +88,7 @@ const removeVenueById = async ({id}: {id: number}): Promise<Venue> => {
 export default {
     getAllVenues,
     getVenueById,
+    getVenueByName,
     addVenue,
     editVenue,
     removeVenueById
